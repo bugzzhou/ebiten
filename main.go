@@ -1,7 +1,7 @@
 package main
 
 import (
-	"1/game"
+	"ebiten/game"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
