@@ -23,6 +23,17 @@ func drawCharAEnemy(g *Game, screen *ebiten.Image) {
 	screen.DrawImage(g.enemy, eneOpt)
 }
 
+func drawCard(g *Game, screen *ebiten.Image) {
+	cardOpt := &ebiten.DrawImageOptions{}
+	if g.isDragging || isMouseOverCard(g) {
+		cardOpt.GeoM.Scale(1.2, 1.2) // 放大卡牌
+		cardOpt.GeoM.Translate(g.cardX-imageWidth*0.1, g.cardY-imageHeight*0.1)
+	} else {
+		cardOpt.GeoM.Translate(g.cardX, g.cardY)
+	}
+	screen.DrawImage(g.card, cardOpt)
+}
+
 // 一般用于测试，显示信息
 func drawText(g *Game, screen *ebiten.Image) {
 	// 设置框子的位置和大小
@@ -30,11 +41,10 @@ func drawText(g *Game, screen *ebiten.Image) {
 
 	// 画框子
 	boxColor := color.RGBA{0, 0, 255, 255} // 蓝色框子
-	// ebitenutil.DrawRect(screen, float64(x), float64(y), float64(width), float64(height), boxColor)
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
 
 	// 设置文本
-	text := fmt.Sprintf("当前的长度分别是 %d %d %d", len(g.DrawCards), len(g.HandCards), len(g.DiscardCards))
+	text := fmt.Sprintf("length are:  %d %d %d", len(g.DrawCards), len(g.HandCards), len(g.DiscardCards))
 
 	// 设置文本的位置
 	textX, textY := x+10, y+10
@@ -49,14 +59,32 @@ func drawSendButton(screen *ebiten.Image) {
 	x, y, width, height := 0, 0, 50, 50
 
 	// 画框子
-	boxColor := color.RGBA{0, 255, 255, 0}
+	boxColor := color.RGBA{0, 255, 255, 255}
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
 
 	// 设置文本
-	text := "发牌"
+	text := "send cards"
 
 	// 设置文本的位置
 	textX, textY := x, y
+
+	// 显示文本
+	ebitenutil.DebugPrintAt(screen, text, textX, textY)
+}
+
+func drawRefreshButton(screen *ebiten.Image) {
+	// 设置刷新按钮
+	x, y, width, height := ScreenWidth-50, 0, 50, 50
+
+	// 画框子
+	boxColor := color.RGBA{0, 255, 0, 255}
+	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
+
+	// 设置文本
+	text := "refresh"
+
+	// 设置文本的位置
+	textX, textY := x+10, y+20
 
 	// 显示文本
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)

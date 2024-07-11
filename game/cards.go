@@ -9,9 +9,10 @@ import (
 )
 
 var (
-	dir    = "./game/pic"
-	lieren = "./game/pic/lieren.jpg"
-	kaka   = "./game/pic/kaka.jpg"
+	dir        = "./game/pic"
+	lieren     = "./game/pic/lieren.jpg"
+	kaka       = "./game/pic/kaka.jpg"
+	cardSample = "./game/pic/1.jpg"
 )
 
 func (g *Game) Shuffle() {
