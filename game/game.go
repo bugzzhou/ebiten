@@ -45,8 +45,6 @@ func NewGame() (*Game, error) {
 	}
 	allCards := getCards()
 
-	allCards := getCards()
-
 	return &Game{
 		cards:     allCards,
 		DrawCards: allCards,
