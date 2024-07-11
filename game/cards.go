@@ -1,6 +1,7 @@
 package game
 
 import (
+	"math/rand"
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -14,6 +15,9 @@ var (
 )
 
 func (g *Game) Shuffle() {
+	rand.Shuffle(len(g.DrawCards), func(i, j int) {
+		g.DrawCards[i], g.DrawCards[j] = g.DrawCards[j], g.DrawCards[i]
+	})
 
 }
 
