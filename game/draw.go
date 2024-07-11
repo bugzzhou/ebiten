@@ -34,7 +34,7 @@ func drawText(g *Game, screen *ebiten.Image) {
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
 
 	// 设置文本
-	text := fmt.Sprintf("当前的长度分别是 %d %d %d", g.counter1, g.counter2, g.counter3)
+	text := fmt.Sprintf("当前的长度分别是 %d %d %d", len(g.DrawCards), len(g.HandCards), len(g.DiscardCards))
 
 	// 设置文本的位置
 	textX, textY := x+10, y+10

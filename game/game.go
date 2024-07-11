@@ -43,6 +43,7 @@ func NewGame() (*Game, error) {
 	if err != nil {
 		return nil, err
 	}
+	allCards := getCards()
 
 	allCards := getCards()
 
@@ -56,7 +57,7 @@ func NewGame() (*Game, error) {
 
 func (g *Game) Update() error {
 	// 检测鼠标点击
-	checkAddClick(g)
+	drawCards(g)
 	return nil
 }
 
