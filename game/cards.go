@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"math/rand"
 	"path/filepath"
 
@@ -14,6 +15,42 @@ var (
 	kaka       = "./game/pic/kaka.jpg"
 	cardSample = "./game/pic/1.jpg"
 )
+
+var (
+	cardDir = "./game/pic/cards"
+)
+
+// 用于存放卡牌的图片
+// key:value = 卡牌id:图片
+var cardImageMap = map[string]*ebiten.Image{}
+
+func init() {
+	files, ids, err := listDir(cardDir)
+	if err != nil {
+		fmt.Printf("failed to get files, and err is: %s\n", err.Error())
+		return
+	}
+	fmt.Println(files)
+	fmt.Println(ids)
+
+	for i := range files {
+		tmpImage, _, err := ebitenutil.NewImageFromFile(files[i])
+		if err != nil {
+			fmt.Printf("failed to get image: %s, and err is: %s\n", files[i], err.Error())
+			continue
+		}
+		cardImageMap[ids[i]] = tmpImage
+	}
+
+	// for
+
+	// cha, _, err := ebitenutil.NewImageFromFile(lieren) // 替换为你的角色图像文件路径
+
+	// ene, _, err := ebitenutil.NewImageFromFile(kaka) // 替换为你的敌人图像文件路径
+
+	// card, _, err := ebitenutil.NewImageFromFile(cardSample) // 替换为你的卡牌图像文件路径
+
+}
 
 func (g *Game) Shuffle() {
 	rand.Shuffle(len(g.DrawCards), func(i, j int) {

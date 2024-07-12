@@ -49,13 +49,15 @@ func NewGame() (*Game, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	allCards := getCards()
 
 	return &Game{
-		cards:         allCards,
-		DrawCards:     allCards,
-		character:     cha,
-		enemy:         ene,
+		cards:     allCards,
+		DrawCards: allCards,
+		character: cha,
+		enemy:     ene,
+
 		card:          card,
 		cardX:         ScreenWidth/2 - imageWidth/2,
 		cardY:         ScreenHeight - imageHeight - 20,
@@ -80,6 +82,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText(g, screen)
 	drawSendButton(screen)
 	drawRefreshButton(screen)
+
+	drawManyCards(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {

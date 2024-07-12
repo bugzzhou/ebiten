@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"image/color"
+	"sort"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -88,4 +89,37 @@ func drawRefreshButton(screen *ebiten.Image) {
 
 	// 显示文本
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
+}
+
+func drawManyCards(screen *ebiten.Image) {
+	x := 0
+	y := float64(ScreenHeight - imageHeight)
+	index := 1
+
+	cMSlice := getCardImageMapSlice(cardImageMap)
+
+	for _, v := range cMSlice {
+		chaOpt := &ebiten.DrawImageOptions{}
+		chaOpt.GeoM.Translate(float64(x+50*index), y)
+		screen.DrawImage(v, chaOpt)
+
+		index++
+	}
+}
+
+func getCardImageMapSlice(cM map[string]*ebiten.Image) []*ebiten.Image {
+	var res []*ebiten.Image
+	var keys []string
+	for key := range cM {
+		keys = append(keys, key)
+	}
+
+	// 对键进行排序
+	sort.Strings(keys)
+
+	// 按照排序后的键顺序输出map的键值对
+	for _, key := range keys {
+		res = append(res, cM[key])
+	}
+	return res
 }
