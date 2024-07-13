@@ -1,5 +1,9 @@
 package game
 
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
+
 const (
 	centerX = ScreenWidth / 2
 	centerY = ScreenHeight / 2
@@ -16,6 +20,13 @@ const (
 
 	TestFlag = 999
 )
+
+const interval = 70 //两张手牌之间的间隔
+
+type HandcardXY struct {
+	X int
+	Y int
+}
 
 // 用于获取图片的中心位置
 // 供ebiten.DrawImageOptions.GeoM.Translate(x, y)使用
@@ -69,4 +80,58 @@ func GetXYRangeInt(flag int) (x1, x2, y1, y2 int) {
 	}
 
 	return 0, 0, 0, 0
+}
+
+func getHandcardXYs(count int) []HandcardXY {
+	res := []HandcardXY{}
+
+	tmpX := make([]int, count)
+
+	if count > 10 {
+		return res
+	}
+
+	if count <= 0 {
+		return res
+	} else if count%2 == 0 {
+		//偶数牌平均分
+		start := centerX - interval*(count/2) + interval/2
+		for i := range tmpX {
+			tmpX[i] = start + interval*i - imageWidth/2
+		}
+	} else {
+		//基数牌平均分
+		start := centerX - (count-1)/2*interval
+		for i := range tmpX {
+			// 绘制点是图片左上角，而不是正中心，所以x需要往左移动图片宽度的一半
+			tmpX[i] = start + interval*i - imageWidth/2
+		}
+	}
+
+	for _, v := range tmpX {
+		tmpXY := HandcardXY{
+			X: v,
+			Y: ScreenHeight - imageHeight,
+		}
+		res = append(res, tmpXY)
+	}
+
+	return res
+}
+
+func getExpandIndex(count int) int {
+	xys := getHandcardXYs(count)
+
+	x, y := ebiten.CursorPosition()
+
+	if len(xys) <= 0 {
+		return -1
+	}
+
+	if y < ScreenHeight-imageHeight || y > ScreenHeight || x < xys[0].X || x > xys[len(xys)-1].X+imageWidth {
+		return -1
+	}
+
+	return (x - xys[0].X) / interval
+
 }

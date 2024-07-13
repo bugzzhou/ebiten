@@ -30,8 +30,6 @@ func init() {
 		fmt.Printf("failed to get files, and err is: %s\n", err.Error())
 		return
 	}
-	fmt.Println(files)
-	fmt.Println(ids)
 
 	for i := range files {
 		tmpImage, _, err := ebitenutil.NewImageFromFile(files[i])
@@ -41,15 +39,6 @@ func init() {
 		}
 		cardImageMap[ids[i]] = tmpImage
 	}
-
-	// for
-
-	// cha, _, err := ebitenutil.NewImageFromFile(lieren) // 替换为你的角色图像文件路径
-
-	// ene, _, err := ebitenutil.NewImageFromFile(kaka) // 替换为你的敌人图像文件路径
-
-	// card, _, err := ebitenutil.NewImageFromFile(cardSample) // 替换为你的卡牌图像文件路径
-
 }
 
 func (g *Game) Shuffle() {
@@ -85,11 +74,11 @@ func (g *Game) EndTurn() {
 }
 
 func getCards() []*ebiten.Image {
-	attCard, _, _ := ebitenutil.NewImageFromFile(filepath.Join(dir, "1.jpg"))
+	attCard, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "1.jpg"))
 
-	useless1, _, _ := ebitenutil.NewImageFromFile(filepath.Join(dir, "2.jpg"))
+	useless1, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "2.jpg"))
 
-	useless2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(dir, "3.jpg"))
+	useless2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "3.jpg"))
 
 	return []*ebiten.Image{
 		attCard, attCard, attCard, attCard, attCard,

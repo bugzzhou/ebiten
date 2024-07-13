@@ -14,8 +14,8 @@ import (
 var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 const (
-	ScreenWidth  = 800
-	ScreenHeight = 600
+	ScreenWidth  = 1000
+	ScreenHeight = 750
 	imageWidth   = 150
 	imageHeight  = 200
 )
@@ -28,12 +28,19 @@ type Game struct {
 	cardY         float64
 	cardOriginalX float64
 	cardOriginalY float64
+
+	expandIndex   int
+	draggingIndex int
 	isDragging    bool
-	cards         []*ebiten.Image
-	DrawCards     []*ebiten.Image
-	HandCards     []*ebiten.Image
-	DiscardCards  []*ebiten.Image
-	showCard      bool
+
+	cards        []*ebiten.Image
+	DrawCards    []*ebiten.Image
+	HandCards    []*ebiten.Image
+	DiscardCards []*ebiten.Image
+
+	showCard bool
+
+	testCount int
 }
 
 func NewGame() (*Game, error) {
@@ -63,37 +70,40 @@ func NewGame() (*Game, error) {
 		cardY:         ScreenHeight - imageHeight - 20,
 		cardOriginalX: ScreenWidth/2 - imageWidth/2,
 		cardOriginalY: ScreenHeight - imageHeight - 20,
-		showCard:      true,
+
+		draggingIndex: -1,
+		expandIndex:   -1,
+		isDragging:    false,
 	}, nil
 }
 
 func (g *Game) Update() error {
-	drawCards(g)
-	checkCardDrag(g)
-	checkRefreshButtonClick(g)
+	sendCards(g)
+
+	// checkCardDrag(g)
+
+	// checkRefreshButtonClick(g)
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	drawCharAEnemy(g, screen)
-	if g.showCard {
-		drawCard(g, screen)
-	}
+	drawManyCards(g, screen)
+
 	drawText(g, screen)
 	drawSendButton(screen)
-	drawRefreshButton(screen)
+	// drawRefreshButton(screen)
 
-	drawManyCards(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return ScreenWidth, ScreenHeight
 }
 
-// 新卡牌再次刷出来
-func (g *Game) RefreshCard() {
-	g.cardX = g.cardOriginalX
-	g.cardY = g.cardOriginalY
-	g.isDragging = false
-	g.showCard = true
-}
+// // 新卡牌再次刷出来
+// func (g *Game) RefreshCard() {
+// 	g.cardX = g.cardOriginalX
+// 	g.cardY = g.cardOriginalY
+// 	g.isDragging = false
+// 	g.showCard = true
+// }
