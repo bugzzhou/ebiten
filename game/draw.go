@@ -103,23 +103,23 @@ func drawManyCards(g *Game, screen *ebiten.Image) {
 			chaOpt.GeoM.Translate(float64(handXY[i].X), float64(handXY[i].Y))
 		}
 
-		screen.DrawImage(v, chaOpt)
+		screen.DrawImage(v.image, chaOpt)
 	}
 }
 
-func DrawHealthBar(g *Game, screen *ebiten.Image, x, y, hplimit int) {
+// func DrawHealthBar(g *Game, screen *ebiten.Image, x, y, hplimit int) {
 
-	barLength := 100
-	barHeight := 10
-	filledRatio := float64(g.testHp) / float64(hplimit)
-	filledLength := float32(filledRatio * float64(barLength))
+// 	barLength := 100
+// 	barHeight := 10
+// 	filledRatio := float64(g.testHp) / float64(hplimit)
+// 	filledLength := float32(filledRatio * float64(barLength))
 
-	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
-	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
+// 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
+// 	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
 
-	text := fmt.Sprintf("%d/%d", g.testHp, hplimit)
-	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
-}
+// 	text := fmt.Sprintf("%d/%d", g.testHp, hplimit)
+// 	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
+// }
 
 //无用函数
 

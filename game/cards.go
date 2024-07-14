@@ -10,15 +10,20 @@ import (
 )
 
 var (
-	dir        = "./game/pic"
-	lieren     = "./game/pic/lieren.jpg"
-	kaka       = "./game/pic/kaka.jpg"
-	cardSample = "./game/pic/1.jpg"
+	// dir        = "./game/pic"
+	lieren = "./game/pic/lieren.jpg"
+	kaka   = "./game/pic/kaka.jpg"
 )
 
 var (
 	cardDir = "./game/pic/cards"
 )
+
+// 唯一标识一个卡牌
+type CardInfo struct {
+	id    int
+	image *ebiten.Image
+}
 
 // 用于存放卡牌的图片
 // key:value = 卡牌id:图片
@@ -73,15 +78,75 @@ func (g *Game) EndTurn() {
 	g.HandCards = nil
 }
 
-func getCards() []*ebiten.Image {
-	attCard, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "1.jpg"))
-
-	useless1, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "2.jpg"))
-
-	useless2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "3.jpg"))
-
-	return []*ebiten.Image{
-		attCard, attCard, attCard, attCard, attCard,
-		useless1, useless1, useless2, useless2, useless2,
+func (g *Game) PlayCard(index int) {
+	if len(g.HandCards) < index {
+		fmt.Printf("failed to play card, out of length of the handCard\n")
+		return
 	}
+
+	CardAffect(g, index)
+	CardDiscard(g, index)
+}
+
+func getCards() []CardInfo {
+	att5, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "1.jpg"))
+	c1 := CardInfo{
+		id:    1,
+		image: att5,
+	}
+
+	get2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "2.jpg"))
+	c2 := CardInfo{
+		id:    2,
+		image: get2,
+	}
+
+	att20, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "3.jpg"))
+	c3 := CardInfo{
+		id:    3,
+		image: att20,
+	}
+
+	get4, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "4.jpg"))
+	c4 := CardInfo{
+		id:    4,
+		image: get4,
+	}
+
+	return []CardInfo{
+		c1, c1, c1, c1, c1,
+		c2, c2, c4, c3, c3,
+	}
+}
+
+func CardAffect(g *Game, index int) {
+	c := g.HandCards[index]
+	if c.id == 1 {
+		if g.enemyHp <= 5 {
+			g.enemyHp = 0
+		} else {
+			g.enemyHp -= 5
+		}
+	} else if c.id == 2 {
+		g.DrawCard(2)
+	} else if c.id == 3 {
+		if g.enemyHp <= 20 {
+			g.enemyHp = 0
+		} else {
+			g.enemyHp -= 20
+		}
+
+		if g.characterHp <= 2 {
+			g.characterHp = 0
+		} else {
+			g.characterHp -= 2
+		}
+	} else if c.id == 4 {
+		g.DrawCard(4)
+	}
+}
+
+func CardDiscard(g *Game, index int) {
+	g.DiscardCards = append(g.DiscardCards, g.HandCards[index])
+	g.HandCards = append(g.HandCards[:index], g.HandCards[index+1:]...)
 }

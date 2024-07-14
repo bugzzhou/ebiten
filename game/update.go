@@ -38,8 +38,10 @@ func changeStatus(g *Game) {
 	if g.isDragging {
 		if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) {
 			if isMouseOverEnemy() {
-				g.DiscardCards = append(g.DiscardCards, g.HandCards[g.draggingIndex])
-				g.HandCards = append(g.HandCards[:g.draggingIndex], g.HandCards[g.draggingIndex+1:]...)
+
+				g.PlayCard(g.draggingIndex)
+				// g.DiscardCards = append(g.DiscardCards, g.HandCards[g.draggingIndex])
+				// g.HandCards = append(g.HandCards[:g.draggingIndex], g.HandCards[g.draggingIndex+1:]...)
 
 				// g.showCard = false // 牌消失
 			}
@@ -60,29 +62,29 @@ func changeStatus(g *Game) {
 
 }
 
-func changeHpRand(g *Game) {
-	if g.characterHp <= 0 {
-		g.characterHp = g.characterHpLimit
-	} else {
-		if R.Intn(3) == 0 {
-			g.characterHp -= 1
-		}
-	}
+// func changeHpRand(g *Game) {
+// 	if g.characterHp <= 0 {
+// 		g.characterHp = g.characterHpLimit
+// 	} else {
+// 		if R.Intn(3) == 0 {
+// 			g.characterHp -= 1
+// 		}
+// 	}
 
-	if g.enemyHp <= 0 {
-		g.enemyHp = g.enemyHpLimit
-	} else {
-		if R.Intn(9) == 0 {
-			g.enemyHp -= 1
-		}
-	}
+// 	if g.enemyHp <= 0 {
+// 		g.enemyHp = g.enemyHpLimit
+// 	} else {
+// 		if R.Intn(9) == 0 {
+// 			g.enemyHp -= 1
+// 		}
+// 	}
 
-	if g.testHp <= 0 {
-		g.testHp = 100
-	} else {
-		g.testHp -= 1
-	}
-}
+// 	if g.testHp <= 0 {
+// 		g.testHp = 100
+// 	} else {
+// 		g.testHp -= 1
+// 	}
+// }
 
 // 核心拖拽函数
 /*

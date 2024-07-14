@@ -21,7 +21,7 @@ const (
 	TestFlag = 999
 )
 
-const interval = 70 //两张手牌之间的间隔
+const interval = 120 //两张手牌之间的间隔
 
 var (
 	barLength = 150

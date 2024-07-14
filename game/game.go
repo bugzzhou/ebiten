@@ -14,7 +14,7 @@ import (
 var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 const (
-	ScreenWidth  = 1000
+	ScreenWidth  = 1400
 	ScreenHeight = 750
 	imageWidth   = 150
 	imageHeight  = 200
@@ -32,15 +32,15 @@ type Game struct {
 	draggingIndex int
 	isDragging    bool
 
-	cards        []*ebiten.Image
-	DrawCards    []*ebiten.Image
-	HandCards    []*ebiten.Image
-	DiscardCards []*ebiten.Image
+	cards        []CardInfo
+	DrawCards    []CardInfo
+	HandCards    []CardInfo
+	DiscardCards []CardInfo
 
-	showCard bool
+	// showCard bool
 
-	testCount int
-	testHp    int
+	// testCount int
+	testHp int
 }
 
 func NewGame() (*Game, error) {
@@ -62,8 +62,8 @@ func NewGame() (*Game, error) {
 		characterHp:      99,
 		characterHpLimit: 99,
 		enemy:            ene,
-		enemyHp:          30,
-		enemyHpLimit:     30,
+		enemyHp:          300,
+		enemyHpLimit:     300,
 
 		draggingIndex: -1,
 		expandIndex:   -1,
@@ -76,11 +76,7 @@ func (g *Game) Update() error {
 
 	changeStatus(g)
 
-	changeHpRand(g)
-
-	// checkCardDrag(g)
-
-	// checkRefreshButtonClick(g)
+	// changeHpRand(g)
 
 	return nil
 }
@@ -92,8 +88,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawText(g, screen)
 	drawSendButton(screen)
 
-	DrawHealthBar(g, screen, 600, 400, 100)
-	// drawRefreshButton(screen)
+	// DrawHealthBar(g, screen, 600, 400, 100)
 
 }
 
