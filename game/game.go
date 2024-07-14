@@ -21,12 +21,9 @@ const (
 )
 
 type Game struct {
-	character        *ebiten.Image
-	characterHp      int
-	characterHpLimit int
-	enemy            *ebiten.Image
-	enemyHp          int
-	enemyHpLimit     int
+	character Character
+
+	enemy Enemy
 
 	expandIndex   int
 	draggingIndex int
@@ -36,6 +33,39 @@ type Game struct {
 	DrawCards    []CardInfo
 	HandCards    []CardInfo
 	DiscardCards []CardInfo
+
+	round int //回合数，后续用于计算buff的生效数值
+}
+
+type Character struct {
+	image   *ebiten.Image
+	hp      int
+	hplimit int
+	energy  int
+}
+
+type Enemy struct {
+	image   *ebiten.Image
+	hp      int
+	hplimit int
+	action  []Act
+	buffs   []Buff
+}
+
+type Act struct {
+	Id          int
+	Name        string
+	Description string
+}
+
+type Buff struct {
+	Id          int
+	Name        string
+	Description string
+
+	Layers     int
+	StartRound int
+	EndRound   int
 }
 
 func NewGame() (*Game, error) {
@@ -51,12 +81,20 @@ func NewGame() (*Game, error) {
 	allCards := getCards()
 
 	return &Game{
-		character:        cha,
-		characterHp:      99,
-		characterHpLimit: 99,
-		enemy:            ene,
-		enemyHp:          300, //写大点方便多牌演示
-		enemyHpLimit:     300,
+		round: 1,
+
+		character: Character{
+			image:   cha,
+			hp:      99,
+			hplimit: 99,
+			energy:  3,
+		},
+		enemy: Enemy{
+			image:   ene,
+			hp:      30,
+			hplimit: 30, //写大点方便多牌演示
+			action:  getActs(kakaActTag),
+		},
 
 		cards:     allCards,
 		DrawCards: allCards,
@@ -69,8 +107,12 @@ func NewGame() (*Game, error) {
 
 func (g *Game) Update() error {
 	sendCards(g)
+	endCards(g)
 
 	changeStatus(g)
+
+	//kaka的行动判断
+	kakaAct(g)
 
 	return nil
 }
@@ -80,6 +122,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	drawManyCards(g, screen)
 	drawText(g, screen)
 	drawSendButton(screen)
+	endTurnButton(screen)
+
+	//kaka的行为按钮
+	kakaActButton(screen)
 
 }
 

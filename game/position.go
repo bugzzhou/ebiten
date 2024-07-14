@@ -17,6 +17,9 @@ const (
 	CharacterPos
 	EnemyPos
 	SendButton
+	EndButton
+
+	KakaActButton
 
 	TestFlag = 999
 )
@@ -45,6 +48,10 @@ func GetXY(flag int) (x, y float64) {
 		return ScreenWidth - roleWidth, centerY - roleHeight/2
 	case SendButton:
 		return 25, 25
+	case EndButton:
+		return ScreenWidth - 25, 25
+	case KakaActButton:
+		return 150, 25
 	case TestFlag:
 		return 0, 0
 	}
@@ -63,6 +70,10 @@ func GetXYRange(flag int) (x1, x2, y1, y2 float64) {
 		return ScreenWidth - roleWidth, ScreenWidth, centerY - roleHeight/2, centerY + roleHeight/2
 	case SendButton:
 		return 0, 50, 0, 50
+	case EndButton:
+		return ScreenWidth - 50, ScreenWidth, 0, 50
+	case KakaActButton:
+		return 100, 200, 0, 50
 	case TestFlag:
 		return 0, 0, 0, 0
 	}
@@ -80,6 +91,10 @@ func GetXYRangeInt(flag int) (x1, x2, y1, y2 int) {
 		return ScreenWidth - roleWidth, ScreenWidth, centerY - roleHeight/2, centerY + roleHeight/2
 	case SendButton:
 		return 0, 50, 0, 50
+	case EndButton:
+		return ScreenWidth - 50, ScreenWidth, 0, 50
+	case KakaActButton:
+		return 100, 200, 0, 50
 	case TestFlag:
 		return 0, 0, 0, 0
 	}

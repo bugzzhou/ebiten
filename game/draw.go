@@ -15,14 +15,14 @@ func drawCharAEnemy(g *Game, screen *ebiten.Image) {
 	x1, y1 := GetXY(CharacterPos)
 	chaOpt := &ebiten.DrawImageOptions{}
 	chaOpt.GeoM.Translate(x1, y1)
-	screen.DrawImage(g.character, chaOpt)
-	drawHp(screen, int(x1), int(y1), g.characterHp, g.characterHpLimit)
+	screen.DrawImage(g.character.image, chaOpt)
+	drawHp(screen, int(x1), int(y1), g.character.hp, g.character.hplimit)
 
 	x2, y2 := GetXY(EnemyPos)
 	eneOpt := &ebiten.DrawImageOptions{}
 	eneOpt.GeoM.Translate(x2, y2)
-	screen.DrawImage(g.enemy, eneOpt)
-	drawHp(screen, int(x2), int(y2), g.enemyHp, g.enemyHpLimit)
+	screen.DrawImage(g.enemy.image, eneOpt)
+	drawHp(screen, int(x2), int(y2), g.enemy.hp, g.enemy.hplimit)
 
 }
 
@@ -43,7 +43,11 @@ func drawText(g *Game, screen *ebiten.Image) {
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
 
 	// 设置文本
-	text := fmt.Sprintf("length are:  %d %d %d", len(g.DrawCards), len(g.HandCards), len(g.DiscardCards))
+	str := `
+	length are:  %d %d %d
+	round is: %v
+	energy is: %v`
+	text := fmt.Sprintf(str, len(g.DrawCards), len(g.HandCards), len(g.DiscardCards), g.round, g.character.energy)
 	textX, textY := x+10, y+10
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
 }
@@ -56,6 +60,18 @@ func drawSendButton(screen *ebiten.Image) {
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
 
 	text := "send cards"
+	textX, textY := x, y
+	ebitenutil.DebugPrintAt(screen, text, textX, textY)
+}
+
+func endTurnButton(screen *ebiten.Image) {
+	// 设置结束回合按钮
+	x, y, width, height := ScreenWidth-50, 0, 50, 50
+
+	boxColor := color.RGBA{0, 255, 255, 255}
+	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
+
+	text := "end turn"
 	textX, textY := x, y
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
 }
@@ -83,4 +99,15 @@ func drawManyCards(g *Game, screen *ebiten.Image) {
 
 		screen.DrawImage(v.image, chaOpt)
 	}
+}
+
+func kakaActButton(screen *ebiten.Image) {
+	// 设置发牌按钮
+	x, y, width, height := 100, 0, 100, 50
+
+	boxColor := color.RGBA{0, 255, 255, 255}
+	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
+
+	text := "kaka takes actions"
+	ebitenutil.DebugPrintAt(screen, text, x, y)
 }

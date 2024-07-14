@@ -5,7 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
-// 点击发牌按钮，抽排
+// 点击发牌按钮，抽牌
 func sendCards(g *Game) {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()
@@ -13,6 +13,18 @@ func sendCards(g *Game) {
 		if x >= x1 && x <= x2 && y >= y1 && y <= y2 {
 			g.Shuffle()
 			g.DrawCard(5)
+			g.character.energy = 3
+		}
+	}
+}
+
+// 结束回合
+func endCards(g *Game) {
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		x, y := ebiten.CursorPosition()
+		x1, x2, y1, y2 := GetXYRangeInt(EndButton)
+		if x >= x1 && x <= x2 && y >= y1 && y <= y2 {
+			g.EndTurn()
 		}
 	}
 }
@@ -35,7 +47,7 @@ func changeStatus(g *Game) {
 	//拖动过程中
 	if g.isDragging {
 		if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) {
-			if isMouseOverEnemy() {
+			if isMouseOverEnemy() && enemyIsEnough(g, g.draggingIndex) {
 				g.PlayCard(g.draggingIndex)
 			}
 			g.isDragging = false
@@ -52,4 +64,29 @@ func isMouseOverEnemy() bool {
 	x, y := ebiten.CursorPosition()
 	enemyX, enemyY := GetXY(EnemyPos)
 	return x >= int(enemyX) && x <= int(enemyX)+imageWidth && y >= int(enemyY) && y <= int(enemyY)+imageHeight
+}
+
+func enemyIsEnough(g *Game, index int) bool {
+	c := g.HandCards[index]
+	cost := 0
+
+	if c.id == 1 || c.id == 2 || c.id == 3 {
+		cost = 1
+	} else if c.id == 4 {
+		cost = 2
+	}
+
+	return g.character.energy >= cost
+}
+
+// kaka行动按钮
+func kakaAct(g *Game) {
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		x, y := ebiten.CursorPosition()
+		x1, x2, y1, y2 := GetXYRangeInt(KakaActButton)
+		if x >= x1 && x <= x2 && y >= y1 && y <= y2 {
+			enemyAct(g)
+			g.round += 1
+		}
+	}
 }
