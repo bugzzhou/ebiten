@@ -36,19 +36,14 @@ type Game struct {
 	DrawCards    []CardInfo
 	HandCards    []CardInfo
 	DiscardCards []CardInfo
-
-	// showCard bool
-
-	// testCount int
-	testHp int
 }
 
 func NewGame() (*Game, error) {
-	cha, _, err := ebitenutil.NewImageFromFile(lieren) // 替换为你的角色图像文件路径
+	cha, _, err := ebitenutil.NewImageFromFile(lieren) // 猎人的图片
 	if err != nil {
 		return nil, err
 	}
-	ene, _, err := ebitenutil.NewImageFromFile(kaka) // 替换为你的敌人图像文件路径
+	ene, _, err := ebitenutil.NewImageFromFile(kaka) // kaka的图片
 	if err != nil {
 		return nil, err
 	}
@@ -56,14 +51,15 @@ func NewGame() (*Game, error) {
 	allCards := getCards()
 
 	return &Game{
-		cards:            allCards,
-		DrawCards:        allCards,
 		character:        cha,
 		characterHp:      99,
 		characterHpLimit: 99,
 		enemy:            ene,
-		enemyHp:          300,
+		enemyHp:          300, //写大点方便多牌演示
 		enemyHpLimit:     300,
+
+		cards:     allCards,
+		DrawCards: allCards,
 
 		draggingIndex: -1,
 		expandIndex:   -1,
@@ -76,30 +72,17 @@ func (g *Game) Update() error {
 
 	changeStatus(g)
 
-	// changeHpRand(g)
-
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	drawCharAEnemy(g, screen)
 	drawManyCards(g, screen)
-
 	drawText(g, screen)
 	drawSendButton(screen)
-
-	// DrawHealthBar(g, screen, 600, 400, 100)
 
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return ScreenWidth, ScreenHeight
 }
-
-// // 新卡牌再次刷出来
-// func (g *Game) RefreshCard() {
-// 	g.cardX = g.cardOriginalX
-// 	g.cardY = g.cardOriginalY
-// 	g.isDragging = false
-// 	g.showCard = true
-// }
