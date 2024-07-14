@@ -21,13 +21,12 @@ const (
 )
 
 type Game struct {
-	character     *ebiten.Image
-	enemy         *ebiten.Image
-	card          *ebiten.Image
-	cardX         float64
-	cardY         float64
-	cardOriginalX float64
-	cardOriginalY float64
+	character        *ebiten.Image
+	characterHp      int
+	characterHpLimit int
+	enemy            *ebiten.Image
+	enemyHp          int
+	enemyHpLimit     int
 
 	expandIndex   int
 	draggingIndex int
@@ -41,6 +40,7 @@ type Game struct {
 	showCard bool
 
 	testCount int
+	testHp    int
 }
 
 func NewGame() (*Game, error) {
@@ -52,24 +52,18 @@ func NewGame() (*Game, error) {
 	if err != nil {
 		return nil, err
 	}
-	card, _, err := ebitenutil.NewImageFromFile(cardSample) // 替换为你的卡牌图像文件路径
-	if err != nil {
-		return nil, err
-	}
 
 	allCards := getCards()
 
 	return &Game{
-		cards:     allCards,
-		DrawCards: allCards,
-		character: cha,
-		enemy:     ene,
-
-		card:          card,
-		cardX:         ScreenWidth/2 - imageWidth/2,
-		cardY:         ScreenHeight - imageHeight - 20,
-		cardOriginalX: ScreenWidth/2 - imageWidth/2,
-		cardOriginalY: ScreenHeight - imageHeight - 20,
+		cards:            allCards,
+		DrawCards:        allCards,
+		character:        cha,
+		characterHp:      99,
+		characterHpLimit: 99,
+		enemy:            ene,
+		enemyHp:          30,
+		enemyHpLimit:     30,
 
 		draggingIndex: -1,
 		expandIndex:   -1,
@@ -80,9 +74,14 @@ func NewGame() (*Game, error) {
 func (g *Game) Update() error {
 	sendCards(g)
 
+	changeStatus(g)
+
+	changeHpRand(g)
+
 	// checkCardDrag(g)
 
 	// checkRefreshButtonClick(g)
+
 	return nil
 }
 
@@ -92,6 +91,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	drawText(g, screen)
 	drawSendButton(screen)
+
+	DrawHealthBar(g, screen, 600, 400, 100)
 	// drawRefreshButton(screen)
 
 }

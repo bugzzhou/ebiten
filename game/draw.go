@@ -6,7 +6,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
@@ -17,11 +16,24 @@ func drawCharAEnemy(g *Game, screen *ebiten.Image) {
 	chaOpt := &ebiten.DrawImageOptions{}
 	chaOpt.GeoM.Translate(x1, y1)
 	screen.DrawImage(g.character, chaOpt)
+	drawHp(screen, int(x1), int(y1), g.characterHp, g.characterHpLimit)
 
 	x2, y2 := GetXY(EnemyPos)
 	eneOpt := &ebiten.DrawImageOptions{}
 	eneOpt.GeoM.Translate(x2, y2)
 	screen.DrawImage(g.enemy, eneOpt)
+	drawHp(screen, int(x2), int(y2), g.enemyHp, g.enemyHpLimit)
+
+}
+
+func drawHp(screen *ebiten.Image, x, y, hp, hplimit int) {
+	y += imageWidth
+	filledRatio := float64(hp) / float64(hplimit)
+	filledLength := float32(filledRatio * float64(barLength))
+	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
+	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
+	text := fmt.Sprintf("%d/%d", hp, hplimit)
+	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
 }
 
 // 一般用于测试，显示信息
@@ -78,8 +90,6 @@ func drawManyCards(g *Game, screen *ebiten.Image) {
 
 	// expandIndex := getExpandIndex(len(handCards))
 
-	changeStatus(g)
-
 	for i, v := range handCards {
 		chaOpt := &ebiten.DrawImageOptions{}
 		if i == g.expandIndex {
@@ -97,47 +107,18 @@ func drawManyCards(g *Game, screen *ebiten.Image) {
 	}
 }
 
-// 1、未拖拽状态 （直接通过鼠标位置的xy判断悬停）
-// 2、拖拽状态（点击的一刹那会记录卡牌的index，修改全局变量index、isDrag； 通过index和isDrag 修改index张牌的状态）
-//
-//	松手的一刹那 修改index张牌为原位置，并且把index、isDrag修改回来
-func changeStatus(g *Game) {
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-		index := getExpandIndex(len(g.HandCards))
-		if index != -1 {
-			g.isDragging = true
-			g.draggingIndex = index
-			g.expandIndex = -1
-		} else {
-			return
-		}
+func DrawHealthBar(g *Game, screen *ebiten.Image, x, y, hplimit int) {
 
-	}
+	barLength := 100
+	barHeight := 10
+	filledRatio := float64(g.testHp) / float64(hplimit)
+	filledLength := float32(filledRatio * float64(barLength))
 
-	//拖动过程中
-	if g.isDragging {
-		if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) {
-			if isMouseOverEnemy() {
-				g.DiscardCards = append(g.DiscardCards, g.HandCards[g.draggingIndex])
-				g.HandCards = append(g.HandCards[:g.draggingIndex], g.HandCards[g.draggingIndex+1:]...)
+	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
+	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
 
-				// g.showCard = false // 牌消失
-			}
-			g.isDragging = false
-			g.draggingIndex = -1
-		}
-	}
-
-	if !g.isDragging {
-		// 未点击，即悬停的判断
-		g.expandIndex = getExpandIndex(len(g.HandCards))
-	}
-
-	// g.testCount += 1
-	// if g.testCount%10 == 0 {
-	// 	fmt.Printf("%v   %v   %v  \n", g.isDragging, g.expandIndex, g.draggingIndex)
-	// }
-
+	text := fmt.Sprintf("%d/%d", g.testHp, hplimit)
+	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
 }
 
 //无用函数

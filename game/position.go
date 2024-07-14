@@ -23,6 +23,11 @@ const (
 
 const interval = 70 //两张手牌之间的间隔
 
+var (
+	barLength = 150
+	barHeight = 10
+)
+
 type HandcardXY struct {
 	X int
 	Y int
