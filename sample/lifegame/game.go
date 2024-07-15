@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -11,17 +13,33 @@ const (
 )
 
 var (
-	grid        = make([][]bool, gridSize)
-	cellSize    = screenWidth / gridSize
-	startButton = &Button{
+	grid       = make([][]bool, gridSize)
+	cellSize   = screenWidth / gridSize
+	stepButton = &Button{
+		x:      screenWidth - 300,
+		y:      screenHeight - 40,
+		width:  80,
+		height: 30,
+		label:  "Step",
+	}
+	runButton = &Button{
+		x:      screenWidth - 200,
+		y:      screenHeight - 40,
+		width:  80,
+		height: 30,
+		label:  "Run",
+	}
+	stopButton = &Button{
 		x:      screenWidth - 100,
 		y:      screenHeight - 40,
 		width:  80,
 		height: 30,
-		label:  "Start",
+		label:  "Stop",
 	}
 	mousePressedLastFrame bool
 	changedCells          = make(map[Point]bool)
+	running               bool
+	ticker                *time.Ticker
 )
 
 type Point struct {
@@ -49,13 +67,22 @@ func NewGame() (*Game, error) {
 
 func (g *Game) Update() error {
 	changeStatus()
+	if running {
+		select {
+		case <-ticker.C:
+			updateGrid()
+		default:
+		}
+	}
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	drawUI(screen)
 
-	startButton.Draw(screen)
+	stepButton.Draw(screen)
+	runButton.Draw(screen)
+	stopButton.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
