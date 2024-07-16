@@ -15,21 +15,21 @@ const (
 var (
 	grid       = make([][]bool, gridSize)
 	cellSize   = screenWidth / gridSize
-	stepButton = &Button{
+	stepButton = &Button1{
 		x:      screenWidth - 300,
 		y:      screenHeight - 40,
 		width:  80,
 		height: 30,
 		label:  "Step",
 	}
-	runButton = &Button{
+	runButton = &Button1{
 		x:      screenWidth - 200,
 		y:      screenHeight - 40,
 		width:  80,
 		height: 30,
 		label:  "Run",
 	}
-	stopButton = &Button{
+	stopButton = &Button1{
 		x:      screenWidth - 100,
 		y:      screenHeight - 40,
 		width:  80,
@@ -46,7 +46,7 @@ type Point struct {
 	X, Y int
 }
 
-type Button struct {
+type Button1 struct {
 	x, y          int
 	width, height int
 	label         string
