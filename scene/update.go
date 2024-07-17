@@ -1,4 +1,4 @@
-package game
+package scene
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
@@ -89,4 +89,16 @@ func kakaAct(g *Game) {
 			g.round += 1
 		}
 	}
+}
+
+// 胜利或者失败，跳转不同的场景
+func changeScene(cs *CombatScene) {
+	if cs.character.hp <= 0 {
+		cs.manager.SetScene(NewScene1(cs.manager))
+	}
+
+	if cs.enemy.hp <= 0 {
+		cs.manager.SetScene(NewScene2(cs.manager))
+	}
+
 }

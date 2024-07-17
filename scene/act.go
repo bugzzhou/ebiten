@@ -1,6 +1,4 @@
-package game
-
-import "fmt"
+package scene
 
 const (
 	kakaActTag = iota
@@ -40,7 +38,7 @@ func getActs(tag int) []Act {
 
 func enemyAct(g *Game) {
 	actIndex := getActIndex(kakaActTag, g.round)
-	fmt.Println(actIndex)
+	// fmt.Println(actIndex)
 
 	if actIndex == 0 {
 		g.enemy.buffs = append(g.enemy.buffs, buff1)

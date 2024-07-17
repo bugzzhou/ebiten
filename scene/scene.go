@@ -1,4 +1,4 @@
-package scenes
+package scene
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
@@ -9,6 +9,10 @@ type Scene interface {
 	Draw(screen *ebiten.Image)
 	Layout(outsideWidth, outsideHeight int) (int, int)
 }
+
+//上面是一个interface的接口，后续每个场景都需要实现上述接口
+
+//下面是一个管理scene的类，主要适用于切换场景
 
 type SceneManager struct {
 	currentScene Scene
@@ -33,9 +37,9 @@ func (sm *SceneManager) Draw(screen *ebiten.Image) {
 
 func (sm *SceneManager) Layout(outsideWidth, outsideHeight int) (int, int) {
 	if sm.currentScene != nil {
-		return sm.currentScene.Layout(outsideWidth, outsideHeight)
+		return sm.currentScene.Layout(ScreenHeight, ScreenHeight)
 	}
-	return outsideWidth, outsideHeight
+	return ScreenHeight, ScreenHeight
 }
 
 func (sm *SceneManager) SetScene(scene Scene) {

@@ -1,20 +1,19 @@
 package main
 
 import (
-	"ebiten/game"
+	"ebiten/scene"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 func main() {
-	ebiten.SetWindowSize(game.ScreenWidth, game.ScreenHeight)
-	ebiten.SetWindowTitle("Card Game Example")
-	game, err := game.NewGame()
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := ebiten.RunGame(game); err != nil {
+	manager := scene.NewSceneManager()
+	manager.SetScene(scene.NewMapScene(manager))
+
+	ebiten.SetWindowSize(scene.ScreenWidth, scene.ScreenHeight)
+	ebiten.SetWindowTitle("Scene Switch Example")
+	if err := ebiten.RunGame(manager); err != nil {
 		log.Fatal(err)
 	}
 }

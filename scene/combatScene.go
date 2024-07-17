@@ -1,40 +1,14 @@
-package game
+package scene
 
 import (
-	_ "image/jpeg"
-	_ "image/png"
-	"time"
-
-	"math/rand"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
-
-const (
-	ScreenWidth  = 1400
-	ScreenHeight = 750
-	imageWidth   = 150
-	imageHeight  = 200
-)
-
-type Game struct {
-	character Character
-
-	enemy Enemy
-
-	expandIndex   int
-	draggingIndex int
-	isDragging    bool
-
-	cards        []CardInfo
-	DrawCards    []CardInfo
-	HandCards    []CardInfo
-	DiscardCards []CardInfo
-
-	round int //回合数，后续用于计算buff的生效数值
+// 战斗的场景，从map跳转过来。 失败、成功、分别跳转到场景3、4
+type CombatScene struct {
+	manager *SceneManager
+	Game
 }
 
 type Character struct {
@@ -68,19 +42,19 @@ type Buff struct {
 	EndRound   int
 }
 
-func NewGame() (*Game, error) {
+func NewCombatScene(manager *SceneManager) *CombatScene {
 	cha, _, err := ebitenutil.NewImageFromFile(lieren) // 猎人的图片
 	if err != nil {
-		return nil, err
+		return nil
 	}
 	ene, _, err := ebitenutil.NewImageFromFile(kaka) // kaka的图片
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
 	allCards := getCards()
 
-	return &Game{
+	gametmp := &Game{
 		round: 1,
 
 		character: Character{
@@ -102,10 +76,17 @@ func NewGame() (*Game, error) {
 		draggingIndex: -1,
 		expandIndex:   -1,
 		isDragging:    false,
-	}, nil
+	}
+
+	return &CombatScene{
+		manager: manager,
+		Game:    *gametmp,
+	}
 }
 
-func (g *Game) Update() error {
+func (cs *CombatScene) Update() error {
+	g := &cs.Game
+
 	sendCards(g)
 	endCards(g)
 
@@ -114,10 +95,13 @@ func (g *Game) Update() error {
 	//kaka的行动判断
 	kakaAct(g)
 
+	changeScene(cs)
+
 	return nil
 }
 
-func (g *Game) Draw(screen *ebiten.Image) {
+func (cs *CombatScene) Draw(screen *ebiten.Image) {
+	g := &cs.Game
 	drawCharAEnemy(g, screen)
 	drawManyCards(g, screen)
 	drawText(g, screen)
@@ -129,6 +113,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 }
 
-func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+func (g *CombatScene) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return ScreenWidth, ScreenHeight
 }

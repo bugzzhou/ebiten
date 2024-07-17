@@ -1,4 +1,4 @@
-package game
+package scene
 
 import (
 	"fmt"
@@ -11,12 +11,12 @@ import (
 
 var (
 	// dir        = "./game/pic"
-	lieren = "./game/pic/lieren.jpg"
-	kaka   = "./game/pic/kaka.jpg"
+	lieren = "./scene/pic/lieren.jpg"
+	kaka   = "./scene/pic/kaka.jpg"
 )
 
 var (
-	cardDir = "./game/pic/cards"
+	cardDir = "./scene/pic/cards"
 )
 
 // 唯一标识一个卡牌

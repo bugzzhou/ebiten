@@ -1,4 +1,4 @@
-package scenes
+package scene
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
@@ -6,6 +6,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
+// 该场景暂时用于表示失败后的跳转
 type Scene1 struct {
 	manager *SceneManager
 }
@@ -16,15 +17,15 @@ func NewScene1(manager *SceneManager) *Scene1 {
 
 func (s *Scene1) Update() error {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-		s.manager.SetScene(NewScene2(s.manager))
+		s.manager.SetScene(NewMapScene(s.manager))
 	}
 	return nil
 }
 
 func (s *Scene1) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, "Scene 1")
+	ebitenutil.DebugPrint(screen, "failed")
 }
 
 func (s *Scene1) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return outsideWidth, outsideHeight
+	return ScreenWidth, ScreenHeight
 }
