@@ -11,12 +11,12 @@ import (
 
 var (
 	// dir        = "./game/pic"
-	Lieren = "./scene/pic/lieren.jpg"
-	Kaka   = "./scene/pic/kaka.jpg"
+	Lieren = "./pic/lieren.jpg"
+	Kaka   = "./pic/kaka.jpg"
 )
 
 var (
-	cardDir = "./scene/pic/cards"
+	cardDir = "./pic/cards"
 )
 
 // 唯一标识一个卡牌

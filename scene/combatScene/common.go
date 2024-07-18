@@ -2,6 +2,7 @@ package combatscene
 
 import (
 	m "ebiten/scene/models"
+	"fmt"
 	_ "image/jpeg"
 	_ "image/png"
 	"math/rand"
@@ -42,6 +43,7 @@ type Game struct {
 func listDir(dir string) (filePaths []string, baseNames []string, err error) {
 	err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
+			fmt.Printf("err !!!\n")
 			return err // 遇到错误时返回
 		}
 		if !info.IsDir() { // 确保是文件
