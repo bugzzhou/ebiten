@@ -13,7 +13,7 @@ type Enemy struct {
 	Image   *ebiten.Image
 	Hp      int
 	Hplimit int
-	action  []Act
+	Action  []Act
 	Buffs   []Buff
 }
 

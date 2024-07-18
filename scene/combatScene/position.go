@@ -1,4 +1,4 @@
-package scene
+package combatscene
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
@@ -19,7 +19,7 @@ const (
 	SendButton
 	EndButton
 
-	KakaActButton
+	KakaActButtonFlag
 
 	TestFlag = 999
 )
@@ -50,7 +50,7 @@ func GetXY(flag int) (x, y float64) {
 		return 25, 25
 	case EndButton:
 		return ScreenWidth - 25, 25
-	case KakaActButton:
+	case KakaActButtonFlag:
 		return 150, 25
 	case TestFlag:
 		return 0, 0
@@ -72,7 +72,7 @@ func GetXYRange(flag int) (x1, x2, y1, y2 float64) {
 		return 0, 50, 0, 50
 	case EndButton:
 		return ScreenWidth - 50, ScreenWidth, 0, 50
-	case KakaActButton:
+	case KakaActButtonFlag:
 		return 100, 200, 0, 50
 	case TestFlag:
 		return 0, 0, 0, 0
@@ -93,7 +93,7 @@ func GetXYRangeInt(flag int) (x1, x2, y1, y2 int) {
 		return 0, 50, 0, 50
 	case EndButton:
 		return ScreenWidth - 50, ScreenWidth, 0, 50
-	case KakaActButton:
+	case KakaActButtonFlag:
 		return 100, 200, 0, 50
 	case TestFlag:
 		return 0, 0, 0, 0

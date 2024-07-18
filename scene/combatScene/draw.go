@@ -9,7 +9,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
-func drawCharAEnemy(g *Game, screen *ebiten.Image) {
+func DrawCharAEnemy(g *Game, screen *ebiten.Image) {
 	screen.Fill(color.Black)
 	// Draw character and enemy first
 	x1, y1 := GetXY(CharacterPos)
@@ -21,8 +21,8 @@ func drawCharAEnemy(g *Game, screen *ebiten.Image) {
 	x2, y2 := GetXY(EnemyPos)
 	eneOpt := &ebiten.DrawImageOptions{}
 	eneOpt.GeoM.Translate(x2, y2)
-	screen.DrawImage(g.enemy.Image, eneOpt)
-	drawHp(screen, int(x2), int(y2), g.enemy.Hp, g.enemy.Hplimit)
+	screen.DrawImage(g.Enemy.Image, eneOpt)
+	drawHp(screen, int(x2), int(y2), g.Enemy.Hp, g.Enemy.Hplimit)
 
 }
 
@@ -37,7 +37,7 @@ func drawHp(screen *ebiten.Image, x, y, hp, hplimit int) {
 }
 
 // 一般用于测试，显示信息
-func drawText(g *Game, screen *ebiten.Image) {
+func DrawText(g *Game, screen *ebiten.Image) {
 	x, y, width, height := 50, 50, 400, 100
 	boxColor := color.RGBA{0, 0, 255, 255} // 蓝色框子
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
@@ -47,12 +47,12 @@ func drawText(g *Game, screen *ebiten.Image) {
 	length are:  %d %d %d
 	round is: %v
 	energy is: %v`
-	text := fmt.Sprintf(str, len(g.DrawCards), len(g.HandCards), len(g.DiscardCards), g.round, g.character.energy)
+	text := fmt.Sprintf(str, len(g.DrawCards), len(g.HandCards), len(g.DiscardCards), g.Round, g.Character.Energy)
 	textX, textY := x+10, y+10
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
 }
 
-func drawSendButton(screen *ebiten.Image) {
+func DrawSendButton(screen *ebiten.Image) {
 	// 设置发牌按钮
 	x, y, width, height := 0, 0, 50, 50
 
@@ -64,7 +64,7 @@ func drawSendButton(screen *ebiten.Image) {
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
 }
 
-func endTurnButton(screen *ebiten.Image) {
+func EndTurnButton(screen *ebiten.Image) {
 	// 设置结束回合按钮
 	x, y, width, height := ScreenWidth-50, 0, 50, 50
 
@@ -80,16 +80,16 @@ func endTurnButton(screen *ebiten.Image) {
 // 2 根据handCard的id 从imageMap中取值
 // 3 根据 position 函数获取5张牌的xy位置
 // 4 循环绘制
-func drawManyCards(g *Game, screen *ebiten.Image) {
+func DrawManyCards(g *Game, screen *ebiten.Image) {
 	handCards := g.HandCards
 	handXY := getHandcardXYs(len(handCards))
 
 	for i, v := range handCards {
 		chaOpt := &ebiten.DrawImageOptions{}
-		if i == g.expandIndex {
+		if i == g.ExpandIndex {
 			chaOpt.GeoM.Scale(1.2, 1.2) // 放大卡牌
 			chaOpt.GeoM.Translate(float64(handXY[i].X)-0.1*imageWidth, float64(handXY[i].Y)*0.9-0.1*imageHeight)
-		} else if g.isDragging && i == g.draggingIndex {
+		} else if g.IsDragging && i == g.DraggingIndex {
 			chaOpt.GeoM.Scale(1.2, 1.2) // 放大卡牌
 			x, y := ebiten.CursorPosition()
 			chaOpt.GeoM.Translate(float64(x)-imageWidth/2-0.1*imageWidth, float64(y)-imageHeight/2-0.1*imageHeight)
@@ -101,7 +101,7 @@ func drawManyCards(g *Game, screen *ebiten.Image) {
 	}
 }
 
-func kakaActButton(screen *ebiten.Image) {
+func KakaActButton(screen *ebiten.Image) {
 	// 设置发牌按钮
 	x, y, width, height := 100, 0, 100, 50
 

@@ -122,18 +122,18 @@ func GetCards() []CardInfo {
 func CardAffect(g *Game, index int) {
 	c := g.HandCards[index]
 	if c.id == 1 {
-		g.enemy.Hp -= 5
-		g.character.Energy -= 1
+		g.Enemy.Hp -= 5
+		g.Character.Energy -= 1
 	} else if c.id == 2 {
 		g.DrawCard(2)
-		g.character.Energy -= 1
+		g.Character.Energy -= 1
 	} else if c.id == 3 {
-		g.enemy.Hp -= 20
-		g.character.Hp -= 2
-		g.character.Energy -= 1
+		g.Enemy.Hp -= 20
+		g.Character.Hp -= 2
+		g.Character.Energy -= 1
 	} else if c.id == 4 {
 		g.DrawCard(4)
-		g.character.Energy -= 2
+		g.Character.Energy -= 2
 	}
 }
 

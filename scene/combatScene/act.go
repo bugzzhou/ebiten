@@ -3,7 +3,7 @@ package combatscene
 import m "ebiten/scene/models"
 
 const (
-	kakaActTag = iota
+	KakaActTag = iota
 )
 
 var (
@@ -31,30 +31,30 @@ var (
 	}
 )
 
-func getActs(tag int) []m.Act {
-	if tag == kakaActTag {
+func GetActs(tag int) []m.Act {
+	if tag == KakaActTag {
 		return []m.Act{act1, act2}
 	}
 	return nil
 }
 
 func enemyAct(g *Game) {
-	actIndex := getActIndex(kakaActTag, g.round)
+	actIndex := getActIndex(KakaActTag, g.Round)
 	// fmt.Println(actIndex)
 
 	if actIndex == 0 {
-		g.enemy.Buffs = append(g.enemy.Buffs, buff1)
+		g.Enemy.Buffs = append(g.Enemy.Buffs, buff1)
 		return
 	} else {
-		b := g.enemy.Buffs[0]
-		attack := 6 + b.Layers*(g.round-b.StartRound)
-		g.character.Hp -= attack
+		b := g.Enemy.Buffs[0]
+		attack := 6 + b.Layers*(g.Round-b.StartRound)
+		g.Character.Hp -= attack
 	}
 
 }
 
 func getActIndex(tag, round int) int {
-	if tag == kakaActTag {
+	if tag == KakaActTag {
 		if round == 1 {
 			return 0
 		} else {

@@ -1,7 +1,10 @@
 package scene
 
 import (
+	combatscene "ebiten/scene/combatScene"
 	cs "ebiten/scene/combatScene"
+	cons "ebiten/scene/const"
+	"ebiten/scene/models"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -10,7 +13,7 @@ import (
 // 战斗的场景，从map跳转过来。 失败、成功、分别跳转到场景3、4
 type CombatScene struct {
 	manager *SceneManager
-	cs.Game
+	combatscene.Game
 }
 
 func NewCombatScene(manager *SceneManager) *CombatScene {
@@ -28,25 +31,25 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 	gametmp := &cs.Game{
 		Round: 1,
 
-		Character: Character{
-			image:   cha,
-			hp:      99,
-			hplimit: 99,
-			energy:  3,
+		Character: models.Character{
+			Image:   cha,
+			Hp:      99,
+			Hplimit: 99,
+			Energy:  3,
 		},
-		enemy: Enemy{
-			image:   ene,
-			hp:      30,
-			hplimit: 30, //写大点方便多牌演示
-			action:  getActs(kakaActTag),
+		Enemy: models.Enemy{
+			Image:   ene,
+			Hp:      30,
+			Hplimit: 30, //写大点方便多牌演示
+			Action:  combatscene.GetActs(combatscene.KakaActTag),
 		},
 
-		cards:     allCards,
+		Cards:     allCards,
 		DrawCards: allCards,
 
-		draggingIndex: -1,
-		expandIndex:   -1,
-		isDragging:    false,
+		DraggingIndex: -1,
+		ExpandIndex:   -1,
+		IsDragging:    false,
 	}
 
 	return &CombatScene{
@@ -58,32 +61,44 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 func (cs *CombatScene) Update() error {
 	g := &cs.Game
 
-	sendCards(g)
-	endCards(g)
+	combatscene.SendCards(g)
+	combatscene.EndCards(g)
 
-	changeStatus(g)
+	combatscene.ChangeStatus(g)
 
 	//kaka的行动判断
-	kakaAct(g)
+	combatscene.KakaAct(g)
 
-	changeScene(cs)
+	ChangeScene(cs)
 
 	return nil
 }
 
 func (cs *CombatScene) Draw(screen *ebiten.Image) {
 	g := &cs.Game
-	drawCharAEnemy(g, screen)
-	drawManyCards(g, screen)
-	drawText(g, screen)
-	drawSendButton(screen)
-	endTurnButton(screen)
+	combatscene.DrawCharAEnemy(g, screen)
+	combatscene.DrawManyCards(g, screen)
+	combatscene.DrawText(g, screen)
+	combatscene.DrawSendButton(screen)
+	combatscene.EndTurnButton(screen)
 
 	//kaka的行为按钮
-	kakaActButton(screen)
+	combatscene.KakaActButton(screen)
 
 }
 
 func (g *CombatScene) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return ScreenWidth, ScreenHeight
+	return cons.ScreenWidth, cons.ScreenHeight
+}
+
+// 胜利或者失败，跳转不同的场景
+func ChangeScene(cs *CombatScene) {
+	if cs.Character.Hp <= 0 {
+		cs.manager.SetScene(NewScene1(cs.manager))
+	}
+
+	if cs.Enemy.Hp <= 0 {
+		cs.manager.SetScene(NewScene2(cs.manager))
+	}
+
 }

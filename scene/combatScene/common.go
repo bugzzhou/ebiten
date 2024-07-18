@@ -25,13 +25,13 @@ const (
 type Game struct {
 	Character m.Character
 
-	enemy m.Enemy
+	Enemy m.Enemy
 
-	expandIndex   int
-	draggingIndex int
-	isDragging    bool
+	ExpandIndex   int
+	DraggingIndex int
+	IsDragging    bool
 
-	cards        []CardInfo
+	Cards        []CardInfo
 	DrawCards    []CardInfo
 	HandCards    []CardInfo
 	DiscardCards []CardInfo
