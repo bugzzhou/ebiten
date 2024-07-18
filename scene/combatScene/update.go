@@ -1,4 +1,4 @@
-package scene
+package combatscene
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"

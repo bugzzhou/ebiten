@@ -1,6 +1,7 @@
-package scene
+package combatscene
 
 import (
+	m "ebiten/scene/models"
 	_ "image/jpeg"
 	_ "image/png"
 	"math/rand"
@@ -22,9 +23,9 @@ const (
 // TODO bugzzhou
 // 其实可以直接融合到CombatScene中去，暂时保留，后续优化结构时，统一修改
 type Game struct {
-	character Character
+	Character m.Character
 
-	enemy Enemy
+	enemy m.Enemy
 
 	expandIndex   int
 	draggingIndex int
@@ -35,7 +36,7 @@ type Game struct {
 	HandCards    []CardInfo
 	DiscardCards []CardInfo
 
-	round int //回合数，后续用于计算buff的生效数值
+	Round int //回合数，后续用于计算buff的生效数值
 }
 
 func listDir(dir string) (filePaths []string, baseNames []string, err error) {

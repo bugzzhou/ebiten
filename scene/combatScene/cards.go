@@ -1,4 +1,4 @@
-package scene
+package combatscene
 
 import (
 	"fmt"
@@ -11,8 +11,8 @@ import (
 
 var (
 	// dir        = "./game/pic"
-	lieren = "./scene/pic/lieren.jpg"
-	kaka   = "./scene/pic/kaka.jpg"
+	Lieren = "./scene/pic/lieren.jpg"
+	Kaka   = "./scene/pic/kaka.jpg"
 )
 
 var (
@@ -88,7 +88,7 @@ func (g *Game) PlayCard(index int) {
 	CardDiscard(g, index)
 }
 
-func getCards() []CardInfo {
+func GetCards() []CardInfo {
 	att5, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "1.jpg"))
 	c1 := CardInfo{
 		id:    1,
@@ -122,18 +122,18 @@ func getCards() []CardInfo {
 func CardAffect(g *Game, index int) {
 	c := g.HandCards[index]
 	if c.id == 1 {
-		g.enemy.hp -= 5
-		g.character.energy -= 1
+		g.enemy.Hp -= 5
+		g.character.Energy -= 1
 	} else if c.id == 2 {
 		g.DrawCard(2)
-		g.character.energy -= 1
+		g.character.Energy -= 1
 	} else if c.id == 3 {
-		g.enemy.hp -= 20
-		g.character.hp -= 2
-		g.character.energy -= 1
+		g.enemy.Hp -= 20
+		g.character.Hp -= 2
+		g.character.Energy -= 1
 	} else if c.id == 4 {
 		g.DrawCard(4)
-		g.character.energy -= 2
+		g.character.Energy -= 2
 	}
 }
 

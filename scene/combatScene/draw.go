@@ -1,4 +1,4 @@
-package scene
+package combatscene
 
 import (
 	"fmt"
@@ -15,14 +15,14 @@ func drawCharAEnemy(g *Game, screen *ebiten.Image) {
 	x1, y1 := GetXY(CharacterPos)
 	chaOpt := &ebiten.DrawImageOptions{}
 	chaOpt.GeoM.Translate(x1, y1)
-	screen.DrawImage(g.character.image, chaOpt)
-	drawHp(screen, int(x1), int(y1), g.character.hp, g.character.hplimit)
+	screen.DrawImage(g.Character.Image, chaOpt)
+	drawHp(screen, int(x1), int(y1), g.Character.Hp, g.Character.Hplimit)
 
 	x2, y2 := GetXY(EnemyPos)
 	eneOpt := &ebiten.DrawImageOptions{}
 	eneOpt.GeoM.Translate(x2, y2)
-	screen.DrawImage(g.enemy.image, eneOpt)
-	drawHp(screen, int(x2), int(y2), g.enemy.hp, g.enemy.hplimit)
+	screen.DrawImage(g.enemy.Image, eneOpt)
+	drawHp(screen, int(x2), int(y2), g.enemy.Hp, g.enemy.Hplimit)
 
 }
 

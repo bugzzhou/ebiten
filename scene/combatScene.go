@@ -1,6 +1,8 @@
 package scene
 
 import (
+	cs "ebiten/scene/combatScene"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
@@ -8,56 +10,25 @@ import (
 // 战斗的场景，从map跳转过来。 失败、成功、分别跳转到场景3、4
 type CombatScene struct {
 	manager *SceneManager
-	Game
-}
-
-type Character struct {
-	image   *ebiten.Image
-	hp      int
-	hplimit int
-	energy  int
-}
-
-type Enemy struct {
-	image   *ebiten.Image
-	hp      int
-	hplimit int
-	action  []Act
-	buffs   []Buff
-}
-
-type Act struct {
-	Id          int
-	Name        string
-	Description string
-}
-
-type Buff struct {
-	Id          int
-	Name        string
-	Description string
-
-	Layers     int
-	StartRound int
-	EndRound   int
+	cs.Game
 }
 
 func NewCombatScene(manager *SceneManager) *CombatScene {
-	cha, _, err := ebitenutil.NewImageFromFile(lieren) // 猎人的图片
+	cha, _, err := ebitenutil.NewImageFromFile(cs.Lieren) // 猎人的图片
 	if err != nil {
 		return nil
 	}
-	ene, _, err := ebitenutil.NewImageFromFile(kaka) // kaka的图片
+	ene, _, err := ebitenutil.NewImageFromFile(cs.Kaka) // kaka的图片
 	if err != nil {
 		return nil
 	}
 
-	allCards := getCards()
+	allCards := cs.GetCards()
 
-	gametmp := &Game{
-		round: 1,
+	gametmp := &cs.Game{
+		Round: 1,
 
-		character: Character{
+		Character: Character{
 			image:   cha,
 			hp:      99,
 			hplimit: 99,

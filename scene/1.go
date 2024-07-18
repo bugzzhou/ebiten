@@ -1,6 +1,8 @@
 package scene
 
 import (
+	cons "ebiten/scene/const"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -27,5 +29,5 @@ func (s *Scene1) Draw(screen *ebiten.Image) {
 }
 
 func (s *Scene1) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return ScreenWidth, ScreenHeight
+	return cons.ScreenWidth, cons.ScreenHeight
 }
