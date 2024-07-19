@@ -14,8 +14,8 @@ type CampfireScene struct {
 	manager *SceneManager
 }
 
-func NewCampfireScene(manager *SceneManager) *Scene1 {
-	return &Scene1{manager: manager}
+func NewCampfireScene(manager *SceneManager) *CampfireScene {
+	return &CampfireScene{manager: manager}
 }
 
 func (s *CampfireScene) Update() error {

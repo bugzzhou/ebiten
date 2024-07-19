@@ -47,7 +47,7 @@ func DrawText(g *Game, screen *ebiten.Image) {
 	length are:  %d %d %d
 	round is: %v
 	energy is: %v`
-	text := fmt.Sprintf(str, len(g.DrawCards), len(g.HandCards), len(g.DiscardCards), g.Round, g.Character.Energy)
+	text := fmt.Sprintf(str, len(g.Character.DrawCards), len(g.Character.HandCards), len(g.Character.DiscardCards), g.Round, g.Character.Energy)
 	textX, textY := x+10, y+10
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
 }
@@ -81,7 +81,7 @@ func EndTurnButton(screen *ebiten.Image) {
 // 3 根据 position 函数获取5张牌的xy位置
 // 4 循环绘制
 func DrawManyCards(g *Game, screen *ebiten.Image) {
-	handCards := g.HandCards
+	handCards := g.Character.HandCards
 	handXY := getHandcardXYs(len(handCards))
 
 	for i, v := range handCards {
@@ -97,7 +97,7 @@ func DrawManyCards(g *Game, screen *ebiten.Image) {
 			chaOpt.GeoM.Translate(float64(handXY[i].X), float64(handXY[i].Y))
 		}
 
-		screen.DrawImage(v.image, chaOpt)
+		screen.DrawImage(v.Image, chaOpt)
 	}
 }
 

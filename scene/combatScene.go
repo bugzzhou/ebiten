@@ -2,8 +2,7 @@ package scene
 
 import (
 	sceneCom "ebiten/scene/combatScene"
-	cons "ebiten/scene/comm"
-	"ebiten/scene/models"
+	"ebiten/scene/comm"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -16,26 +15,14 @@ type CombatScene struct {
 
 func NewCombatScene(manager *SceneManager) *CombatScene {
 
-	allCards := sceneCom.GetCards()
+	localCharacter := comm.GetLocalCharacter()
+	localKaka := comm.GetLocalKaka()
 
 	gametmp := &sceneCom.Game{
 		Round: 1,
 
-		Character: models.Character{
-			Image:   cha,
-			Hp:      99,
-			Hplimit: 99,
-			Energy:  3,
-		},
-		Enemy: models.Enemy{
-			Image:   ene,
-			Hp:      30,
-			Hplimit: 30, //写大点方便多牌演示
-			Action:  sceneCom.GetActs(sceneCom.KakaActTag),
-		},
-
-		Cards:     allCards,
-		DrawCards: allCards,
+		Character: localCharacter,
+		Enemy:     *localKaka,
 
 		DraggingIndex: -1,
 		ExpandIndex:   -1,
@@ -78,7 +65,7 @@ func (cs *CombatScene) Draw(screen *ebiten.Image) {
 }
 
 func (g *CombatScene) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return cons.ScreenWidth, cons.ScreenHeight
+	return comm.ScreenWidth, comm.ScreenHeight
 }
 
 // 胜利或者失败，跳转不同的场景

@@ -11,8 +11,8 @@ func SendCards(g *Game) {
 		x, y := ebiten.CursorPosition()
 		x1, x2, y1, y2 := GetXYRangeInt(SendButton)
 		if x >= x1 && x <= x2 && y >= y1 && y <= y2 {
-			g.Shuffle()
-			g.DrawCard(5)
+			g.Character.Shuffle()
+			g.Character.DrawCard(5)
 			g.Character.Energy = 3
 		}
 	}
@@ -24,7 +24,7 @@ func EndCards(g *Game) {
 		x, y := ebiten.CursorPosition()
 		x1, x2, y1, y2 := GetXYRangeInt(EndButton)
 		if x >= x1 && x <= x2 && y >= y1 && y <= y2 {
-			g.EndTurn()
+			g.Character.EndTurn()
 		}
 	}
 }
@@ -34,7 +34,7 @@ func EndCards(g *Game) {
 // 松手的一刹那 修改index张牌为原位置，并且把index、isDrag修改回来
 func ChangeStatus(g *Game) {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-		index := getExpandIndex(len(g.HandCards))
+		index := getExpandIndex(len(g.Character.HandCards))
 		if index != -1 {
 			g.IsDragging = true
 			g.DraggingIndex = index
@@ -48,14 +48,14 @@ func ChangeStatus(g *Game) {
 	if g.IsDragging {
 		if inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft) {
 			if isMouseOverEnemy() && enemyIsEnough(g, g.DraggingIndex) {
-				g.PlayCard(g.DraggingIndex)
+				g.Character.PlayCard(g.DraggingIndex, &g.Enemy)
 			}
 			g.IsDragging = false
 			g.DraggingIndex = -1
 		}
 	}
 	if !g.IsDragging {
-		g.ExpandIndex = getExpandIndex(len(g.HandCards))
+		g.ExpandIndex = getExpandIndex(len(g.Character.HandCards))
 	}
 }
 
@@ -67,12 +67,12 @@ func isMouseOverEnemy() bool {
 }
 
 func enemyIsEnough(g *Game, index int) bool {
-	c := g.HandCards[index]
+	c := g.Character.HandCards[index]
 	cost := 0
 
-	if c.id == 1 || c.id == 2 || c.id == 3 {
+	if c.Id == 1 || c.Id == 2 || c.Id == 3 {
 		cost = 1
-	} else if c.id == 4 {
+	} else if c.Id == 4 {
 		cost = 2
 	}
 
@@ -85,7 +85,7 @@ func KakaAct(g *Game) {
 		x, y := ebiten.CursorPosition()
 		x1, x2, y1, y2 := GetXYRangeInt(KakaActButtonFlag)
 		if x >= x1 && x <= x2 && y >= y1 && y <= y2 {
-			enemyAct(g)
+			g.Enemy.EnemyAct(g.Round, g.Character)
 			g.Round += 1
 		}
 	}

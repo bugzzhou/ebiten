@@ -59,7 +59,9 @@ func NewMapScene(manager *SceneManager) *MapScene {
 
 func (s *MapScene) Update() error {
 	nodeType := ms.CheckNodeSite(s.graph.Nodes)
-	ChooseMap(s, nodeType)
+	if nodeType != -1 {
+		ChooseMap(s, nodeType)
+	}
 	return nil
 }
 

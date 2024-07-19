@@ -20,8 +20,8 @@ func CreateSampleGraph() *m.Graph {
 			{NodeType: CombatNode, X: 300, Y: 200, AdjList: []int{7}},    // 4
 			{NodeType: CombatNode, X: 300, Y: 300, AdjList: []int{8}},    // 5
 			{NodeType: CombatNode, X: 300, Y: 400, AdjList: []int{8}},    // 6
-			{NodeType: CombatNode, X: 400, Y: 150, AdjList: []int{9}},    // 7
-			{NodeType: CombatNode, X: 400, Y: 250, AdjList: []int{9}},    // 8
+			{NodeType: CampfireNode, X: 400, Y: 150, AdjList: []int{9}},  // 7
+			{NodeType: CampfireNode, X: 400, Y: 350, AdjList: []int{9}},  // 8
 			{NodeType: EndNode, X: 500, Y: 250, AdjList: []int{}},        // 9
 		},
 	}
