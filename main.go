@@ -2,7 +2,7 @@ package main
 
 import (
 	"ebiten/scene"
-	cons "ebiten/scene/const"
+	cons "ebiten/scene/comm"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"

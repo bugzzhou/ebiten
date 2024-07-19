@@ -36,7 +36,6 @@ type HandcardXY struct {
 	Y int
 }
 
-// 用于获取图片的中心位置
 // 供ebiten.DrawImageOptions.GeoM.Translate(x, y)使用
 func GetXY(flag int) (x, y float64) {
 	switch flag {
