@@ -1,7 +1,7 @@
 package scene
 
 import (
-	cons "ebiten/scene/const"
+	cons "ebiten/scene/comm"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"

@@ -1,34 +1,24 @@
 package scene
 
 import (
-	combatscene "ebiten/scene/combatScene"
-	cs "ebiten/scene/combatScene"
-	cons "ebiten/scene/const"
+	sceneCom "ebiten/scene/combatScene"
+	cons "ebiten/scene/comm"
 	"ebiten/scene/models"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 // 战斗的场景，从map跳转过来。 失败、成功、分别跳转到场景3、4
 type CombatScene struct {
 	manager *SceneManager
-	combatscene.Game
+	sceneCom.Game
 }
 
 func NewCombatScene(manager *SceneManager) *CombatScene {
-	cha, _, err := ebitenutil.NewImageFromFile(cs.Lieren) // 猎人的图片
-	if err != nil {
-		return nil
-	}
-	ene, _, err := ebitenutil.NewImageFromFile(cs.Kaka) // kaka的图片
-	if err != nil {
-		return nil
-	}
 
-	allCards := cs.GetCards()
+	allCards := sceneCom.GetCards()
 
-	gametmp := &cs.Game{
+	gametmp := &sceneCom.Game{
 		Round: 1,
 
 		Character: models.Character{
@@ -41,7 +31,7 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 			Image:   ene,
 			Hp:      30,
 			Hplimit: 30, //写大点方便多牌演示
-			Action:  combatscene.GetActs(combatscene.KakaActTag),
+			Action:  sceneCom.GetActs(sceneCom.KakaActTag),
 		},
 
 		Cards:     allCards,
@@ -61,13 +51,13 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 func (cs *CombatScene) Update() error {
 	g := &cs.Game
 
-	combatscene.SendCards(g)
-	combatscene.EndCards(g)
+	sceneCom.SendCards(g)
+	sceneCom.EndCards(g)
 
-	combatscene.ChangeStatus(g)
+	sceneCom.ChangeStatus(g)
 
 	//kaka的行动判断
-	combatscene.KakaAct(g)
+	sceneCom.KakaAct(g)
 
 	ChangeScene(cs)
 
@@ -76,14 +66,14 @@ func (cs *CombatScene) Update() error {
 
 func (cs *CombatScene) Draw(screen *ebiten.Image) {
 	g := &cs.Game
-	combatscene.DrawCharAEnemy(g, screen)
-	combatscene.DrawManyCards(g, screen)
-	combatscene.DrawText(g, screen)
-	combatscene.DrawSendButton(screen)
-	combatscene.EndTurnButton(screen)
+	sceneCom.DrawCharAEnemy(g, screen)
+	sceneCom.DrawManyCards(g, screen)
+	sceneCom.DrawText(g, screen)
+	sceneCom.DrawSendButton(screen)
+	sceneCom.EndTurnButton(screen)
 
 	//kaka的行为按钮
-	combatscene.KakaActButton(screen)
+	sceneCom.KakaActButton(screen)
 
 }
 
