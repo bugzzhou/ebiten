@@ -39,6 +39,7 @@ import (
 	cons "ebiten/scene/comm"
 	ms "ebiten/scene/mapScene"
 	m "ebiten/scene/models"
+	"fmt"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -58,9 +59,10 @@ func NewMapScene(manager *SceneManager) *MapScene {
 }
 
 func (s *MapScene) Update() error {
-	nodeType := ms.CheckNodeSite(s.graph.Nodes)
-	if nodeType != -1 {
-		ChooseMap(s, nodeType)
+	nodeType, nodeIndex := ms.CheckNodeSite(s.graph.Nodes)
+	if nodeType != "" && nodeIndex != -1 {
+
+		ChooseMap(s, nodeType, nodeIndex)
 	}
 	return nil
 }
@@ -73,12 +75,20 @@ func (s *MapScene) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return cons.ScreenWidth, cons.ScreenHeight
 }
 
-func ChooseMap(s *MapScene, nodeType int) {
+func ChooseMap(s *MapScene, nodeType string, nodeIndex int) {
+	ms.LastChooseRoomIndex = nodeIndex
+	s.graph.Nodes[nodeIndex].Explored = true
+
+	fmt.Printf("LastChooseRoomIndex is: %d\n", ms.LastChooseRoomIndex)
+	fmt.Printf("Nodes are: %v\n", s.graph.Nodes)
+
 	switch nodeType {
 	case ms.CombatNode:
 		s.manager.SetScene(NewCombatScene(s.manager))
 	case ms.CampfireNode:
 		s.manager.SetScene(NewCampfireScene(s.manager))
+	case ms.EndNode:
+		s.manager.SetScene(NewScene2(s.manager))
 	default:
 		s.manager.SetScene(NewScene1(s.manager)) //需要一个默认的页面， 后续增加新的页面
 	}

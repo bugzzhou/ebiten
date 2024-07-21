@@ -9,14 +9,14 @@ import (
 )
 
 var (
-	CampfirePic = "./pic/kaka.jpg"
+	CampfirePic = "./pic/campfire.jpg"
 )
 
 var campFirePic *ebiten.Image
 
 func init() {
 	var err error
-	campFirePic, _, err = ebitenutil.NewImageFromFile(CampfirePic) // kaka的图片
+	campFirePic, _, err = ebitenutil.NewImageFromFile(CampfirePic) // 火堆里的图片-现在只有睡觉
 	if err != nil {
 		fmt.Printf("failed to get campfirePic, and err is: %s\n", err.Error())
 	}

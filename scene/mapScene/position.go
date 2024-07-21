@@ -1,4 +1,4 @@
-package campfirescene
+package mapscene
 
 const (
 	campfireWeight = 150
