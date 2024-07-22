@@ -47,7 +47,7 @@ func DrawText(g *Game, screen *ebiten.Image) {
 	length are:  %d %d %d
 	round is: %v
 	energy is: %v`
-	text := fmt.Sprintf(str, len(g.Character.DrawCards), len(g.Character.HandCards), len(g.Character.DiscardCards), g.Round, g.Character.Energy)
+	text := fmt.Sprintf(str, len(g.Character.DrawDeck), len(g.Character.HandCards), len(g.Character.DiscardDeck), g.Round, g.Character.Energy)
 	textX, textY := x+10, y+10
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
 }

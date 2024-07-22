@@ -15,11 +15,16 @@ const (
 
 const (
 	KakaActTag = iota
+
+	TestEnemyActTag = 9999
 )
 
 var (
 	Lieren = "./pic/lieren.jpg"
 	Kaka   = "./pic/kaka.jpg"
+	Rough  = "./pic/rough.jpg"
+
+	TestEnemy = "./pic/test_enemy.jpg"
 )
 
 var (
@@ -48,20 +53,20 @@ func init() {
 
 	allCards := GetCards()
 	LocalCharacter = Character{
-		Image:     cha,
-		Hp:        99,
-		Hplimit:   99,
-		Energy:    99,
-		Cards:     allCards,
-		DrawCards: allCards,
+		Image:    cha,
+		Hp:       99,
+		Hplimit:  99,
+		Energy:   99,
+		Cards:    allCards,
+		DrawDeck: allCards,
 	}
 }
 
 func GetLocalCharacter() *Character {
 	LocalCharacter.Energy = 3
-	LocalCharacter.DrawCards = GetCards()
+	LocalCharacter.DrawDeck = GetCards()
 	LocalCharacter.HandCards = nil
-	LocalCharacter.DiscardCards = nil
+	LocalCharacter.DiscardDeck = nil
 	return &LocalCharacter
 }
 

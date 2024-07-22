@@ -23,41 +23,41 @@ type Character struct {
 	Hplimit int
 	Energy  int
 
-	Cards        []CardInfo
-	DrawCards    []CardInfo
-	HandCards    []CardInfo
-	DiscardCards []CardInfo
+	Cards       []CardInfo
+	DrawDeck    []CardInfo
+	HandCards   []CardInfo
+	DiscardDeck []CardInfo
 }
 
 func (c *Character) Shuffle() {
-	rand.Shuffle(len(c.DrawCards), func(i, j int) {
-		c.DrawCards[i], c.DrawCards[j] = c.DrawCards[j], c.DrawCards[i]
+	rand.Shuffle(len(c.DrawDeck), func(i, j int) {
+		c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
 	})
 
 }
 
 func (c *Character) DrawCard(drawNum int) {
 	// 弃牌堆 - > 抽牌堆
-	if len(c.DrawCards) < drawNum {
-		c.DrawCards = append(c.DrawCards, c.DiscardCards...)
-		c.DiscardCards = nil
-		R.Shuffle(len(c.DrawCards), func(i, j int) {
-			c.DrawCards[i], c.DrawCards[j] = c.DrawCards[j], c.DrawCards[i]
+	if len(c.DrawDeck) < drawNum {
+		c.DrawDeck = append(c.DrawDeck, c.DiscardDeck...)
+		c.DiscardDeck = nil
+		R.Shuffle(len(c.DrawDeck), func(i, j int) {
+			c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
 		})
 	}
 
 	// 抽牌堆 - > 手牌
-	if len(c.DrawCards) <= drawNum {
-		c.HandCards = append(c.HandCards, c.DrawCards...)
-		c.DrawCards = nil
+	if len(c.DrawDeck) <= drawNum {
+		c.HandCards = append(c.HandCards, c.DrawDeck...)
+		c.DrawDeck = nil
 	} else {
-		c.HandCards = append(c.HandCards, c.DrawCards[:drawNum]...)
-		c.DrawCards = c.DrawCards[drawNum:]
+		c.HandCards = append(c.HandCards, c.DrawDeck[:drawNum]...)
+		c.DrawDeck = c.DrawDeck[drawNum:]
 	}
 }
 
 func (c *Character) EndTurn() {
-	c.DiscardCards = append(c.DiscardCards, c.HandCards...)
+	c.DiscardDeck = append(c.DiscardDeck, c.HandCards...)
 	c.HandCards = nil
 }
 
@@ -121,6 +121,6 @@ func (c *Character) CardAffect(index int, enemy *Enemy) {
 }
 
 func (c *Character) CardDiscard(index int) {
-	c.DiscardCards = append(c.DiscardCards, c.HandCards[index])
+	c.DiscardDeck = append(c.DiscardDeck, c.HandCards[index])
 	c.HandCards = append(c.HandCards[:index], c.HandCards[index+1:]...)
 }
