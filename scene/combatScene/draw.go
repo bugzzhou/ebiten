@@ -16,25 +16,25 @@ func DrawCharAEnemy(g *Game, screen *ebiten.Image) {
 	chaOpt := &ebiten.DrawImageOptions{}
 	chaOpt.GeoM.Translate(x1, y1)
 	screen.DrawImage(g.Character.Image, chaOpt)
-	drawHp(screen, int(x1), int(y1), g.Character.Hp, g.Character.Hplimit)
+	drawHpAndShield(screen, int(x1), int(y1), g.Character.Hp, g.Character.Hplimit, 0)
 
 	x2, y2 := GetXY(EnemyPos)
 	eneOpt := &ebiten.DrawImageOptions{}
 	eneOpt.GeoM.Translate(x2, y2)
 	screen.DrawImage(g.Enemy.Image, eneOpt)
-	drawHp(screen, int(x2), int(y2), g.Enemy.Hp, g.Enemy.Hplimit)
+	drawHpAndShield(screen, int(x2), int(y2), g.Enemy.Hp, g.Enemy.Hplimit, g.Enemy.Shield)
 
 }
 
-func drawHp(screen *ebiten.Image, x, y, hp, hplimit int) {
-	y += imageWidth
-	filledRatio := float64(hp) / float64(hplimit)
-	filledLength := float32(filledRatio * float64(barLength))
-	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
-	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
-	text := fmt.Sprintf("%d/%d", hp, hplimit)
-	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
-}
+// func drawHpAndShield(screen *ebiten.Image, x, y, hp, hplimit, shield int) {
+// 	y += imageWidth
+// 	filledRatio := float64(hp) / float64(hplimit)
+// 	filledLength := float32(filledRatio * float64(barLength))
+// 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
+// 	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
+// 	text := fmt.Sprintf("%d/%d", hp, hplimit)
+// 	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
+// }
 
 // 一般用于测试，显示信息
 func DrawText(g *Game, screen *ebiten.Image) {
@@ -50,6 +50,41 @@ func DrawText(g *Game, screen *ebiten.Image) {
 	text := fmt.Sprintf(str, len(g.Character.DrawDeck), len(g.Character.HandCards), len(g.Character.DiscardDeck), g.Round, g.Character.Energy)
 	textX, textY := x+10, y+10
 	ebitenutil.DebugPrintAt(screen, text, textX, textY)
+}
+
+func drawHpAndShield(screen *ebiten.Image, x, y, hp, hplimit, shield int) {
+	y += imageWidth
+
+	// 绘制血条背景
+	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
+
+	// 计算血条的当前填充长度
+	filledRatio := float64(hp) / float64(hplimit)
+	filledLength := float32(filledRatio * float64(barLength))
+	// 绘制当前血量的红色部分
+	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false) // 红色
+
+	// 显示血条的数值
+	text := fmt.Sprintf("%d/%d", hp, hplimit)
+	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
+
+	// 绘制护盾的蓝色方框和文本
+	if shield > 0 {
+		shieldColor := color.RGBA{0, 0, 255, 255} // 蓝色
+		shieldSize := barHeight                   // 假设护盾方框的大小与血条高度相同
+		shieldX := x + (barLength-shieldSize)/2   // 护盾方框的x位置在血条的正下方中间
+		shieldY := y + barHeight                  // 护盾方框的y位置在血条的正下方
+
+		// 绘制护盾方框
+		vector.DrawFilledRect(screen, float32(shieldX), float32(shieldY), float32(shieldSize), float32(shieldSize), shieldColor, false)
+
+		// 显示护盾的数值
+		shieldText := fmt.Sprintf("%d", shield)
+		// shieldTextWidth := ebiten.TextWidth(ebiten.DefaultFont, shieldText)
+		shieldTextX := shieldX
+		shieldTextY := shieldY + shieldSize/2 + 1 // 稍微偏移一点以适应文本
+		ebitenutil.DebugPrintAt(screen, shieldText, shieldTextX, shieldTextY)
+	}
 }
 
 func DrawSendButton(screen *ebiten.Image) {

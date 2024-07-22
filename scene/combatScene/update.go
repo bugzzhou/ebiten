@@ -80,7 +80,7 @@ func enemyIsEnough(g *Game, index int) bool {
 }
 
 // kaka行动按钮
-func KakaAct(g *Game) {
+func EnemyAct(g *Game) {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()
 		x1, x2, y1, y2 := GetXYRangeInt(KakaActButtonFlag)

@@ -16,13 +16,20 @@ type CombatScene struct {
 func NewCombatScene(manager *SceneManager) *CombatScene {
 
 	localCharacter := comm.GetLocalCharacter()
-	localKaka := comm.GetLocalKaka()
+
+	enemy := &comm.Enemy{}
+
+	if comm.R.Intn(2) == 0 {
+		enemy = comm.GetLocalKaka()
+	} else {
+		enemy = comm.GetTestEnemy()
+	}
 
 	gametmp := &sceneCom.Game{
 		Round: 1,
 
 		Character: localCharacter,
-		Enemy:     *localKaka,
+		Enemy:     *enemy,
 
 		DraggingIndex: -1,
 		ExpandIndex:   -1,
@@ -44,7 +51,7 @@ func (cs *CombatScene) Update() error {
 	sceneCom.ChangeStatus(g)
 
 	//kaka的行动判断
-	sceneCom.KakaAct(g)
+	sceneCom.EnemyAct(g)
 
 	ChangeScene(cs)
 
