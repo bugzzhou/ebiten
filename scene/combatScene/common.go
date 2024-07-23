@@ -20,6 +20,8 @@ type Game struct {
 
 	Enemy comm.Enemy
 
+	RoundBegin bool
+
 	ExpandIndex   int
 	DraggingIndex int
 	IsDragging    bool

@@ -26,16 +26,6 @@ func DrawCharAEnemy(g *Game, screen *ebiten.Image) {
 
 }
 
-// func drawHpAndShield(screen *ebiten.Image, x, y, hp, hplimit, shield int) {
-// 	y += imageWidth
-// 	filledRatio := float64(hp) / float64(hplimit)
-// 	filledLength := float32(filledRatio * float64(barLength))
-// 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(barLength), float32(barHeight), color.RGBA{0, 0, 0, 255}, false) // 黑色
-// 	vector.DrawFilledRect(screen, float32(x), float32(y), filledLength, float32(barHeight), color.RGBA{255, 0, 0, 255}, false)     // 红色
-// 	text := fmt.Sprintf("%d/%d", hp, hplimit)
-// 	ebitenutil.DebugPrintAt(screen, text, x, y+barHeight+10)
-// }
-
 // 一般用于测试，显示信息
 func DrawText(g *Game, screen *ebiten.Image) {
 	x, y, width, height := 50, 50, 400, 100
@@ -87,18 +77,6 @@ func drawHpAndShield(screen *ebiten.Image, x, y, hp, hplimit, shield int) {
 	}
 }
 
-func DrawSendButton(screen *ebiten.Image) {
-	// 设置发牌按钮
-	x, y, width, height := 0, 0, 50, 50
-
-	boxColor := color.RGBA{0, 255, 255, 255}
-	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
-
-	text := "send cards"
-	textX, textY := x, y
-	ebitenutil.DebugPrintAt(screen, text, textX, textY)
-}
-
 func EndTurnButton(screen *ebiten.Image) {
 	// 设置结束回合按钮
 	x, y, width, height := ScreenWidth-50, 0, 50, 50
@@ -134,15 +112,4 @@ func DrawManyCards(g *Game, screen *ebiten.Image) {
 
 		screen.DrawImage(v.Image, chaOpt)
 	}
-}
-
-func KakaActButton(screen *ebiten.Image) {
-	// 设置发牌按钮
-	x, y, width, height := 100, 0, 100, 50
-
-	boxColor := color.RGBA{0, 255, 255, 255}
-	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
-
-	text := "kaka takes actions"
-	ebitenutil.DebugPrintAt(screen, text, x, y)
 }

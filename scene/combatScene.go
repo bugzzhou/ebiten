@@ -31,6 +31,8 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 		Character: localCharacter,
 		Enemy:     *enemy,
 
+		RoundBegin: true,
+
 		DraggingIndex: -1,
 		ExpandIndex:   -1,
 		IsDragging:    false,
@@ -45,13 +47,14 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 func (cs *CombatScene) Update() error {
 	g := &cs.Game
 
-	sceneCom.SendCards(g)
+	if g.RoundBegin {
+		g.RoundBegin = false
+		sceneCom.SendCards(g)
+	}
+
 	sceneCom.EndCards(g)
 
 	sceneCom.ChangeStatus(g)
-
-	//kaka的行动判断
-	sceneCom.EnemyAct(g)
 
 	ChangeScene(cs)
 
@@ -63,12 +66,7 @@ func (cs *CombatScene) Draw(screen *ebiten.Image) {
 	sceneCom.DrawCharAEnemy(g, screen)
 	sceneCom.DrawManyCards(g, screen)
 	sceneCom.DrawText(g, screen)
-	sceneCom.DrawSendButton(screen)
 	sceneCom.EndTurnButton(screen)
-
-	//kaka的行为按钮
-	sceneCom.KakaActButton(screen)
-
 }
 
 func (g *CombatScene) Layout(outsideWidth, outsideHeight int) (int, int) {
