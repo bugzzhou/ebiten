@@ -44,7 +44,8 @@ const (
 // map[enemyName][int]int ， enemy第n个回合，enemy采取的动作是所有动作中第m个
 // map[int]Buff， key是唯一标识，value是单个buff的具体信息
 var actsMap map[int]map[int]Act
-var actINdexMap map[int][]int
+
+// var actINdexMap map[int][][]int
 var buffMap map[int]Buff
 
 func init() {
@@ -61,7 +62,7 @@ func init() {
 	}
 
 	buffMap = map[int]Buff{
-		1: Buff{
+		1: {
 			Id:          1,
 			Name:        "仪式",
 			Description: "每回合增加3点力量",

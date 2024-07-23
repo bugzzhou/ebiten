@@ -34,7 +34,13 @@ var (
 
 // 唯一标识一个卡牌
 type CardInfo struct {
-	Id    int
+	Id int
+
+	Attack     int
+	Shield     int
+	SelfAttack int
+	Cost       int
+
 	Image *ebiten.Image
 }
 

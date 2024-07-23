@@ -21,6 +21,7 @@ type Character struct {
 	Image   *ebiten.Image
 	Hp      int
 	Hplimit int
+	Shield  int
 	Energy  int
 
 	Cards       []CardInfo
@@ -104,6 +105,8 @@ func GetCards() []CardInfo {
 
 func (c *Character) CardAffect(index int, enemy *Enemy) {
 	card := c.HandCards[index]
+	affectByCard(c, enemy, &card)
+
 	if card.Id == 1 {
 		enemy.Hp -= 5
 		c.Energy -= 1
@@ -123,4 +126,17 @@ func (c *Character) CardAffect(index int, enemy *Enemy) {
 func (c *Character) CardDiscard(index int) {
 	c.DiscardDeck = append(c.DiscardDeck, c.HandCards[index])
 	c.HandCards = append(c.HandCards[:index], c.HandCards[index+1:]...)
+}
+
+func affectByCard(c *Character, e *Enemy, card *CardInfo) {
+	c.Shield += card.Shield
+	c.Hp -= card.SelfAttack
+	c.Energy -= card.Cost
+
+	if card.Attack < e.Shield {
+		e.Shield -= card.Attack
+	} else {
+		e.Shield = 0
+		e.Hp -= (card.Attack - e.Shield)
+	}
 }
