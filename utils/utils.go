@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"golang.org/x/exp/constraints"
 )
 
 func ListDir(dir string) (filePaths []string, baseNames []string, err error) {
@@ -35,4 +37,11 @@ func IsInSlice[T comparable](slice []T, target T) bool {
 		}
 	}
 	return false
+}
+
+func Min[T constraints.Ordered](x, y T) T {
+	if x > y {
+		return y
+	}
+	return x
 }

@@ -1,19 +1,12 @@
 package comm
 
 import (
+	// "ebiten/utils"
+	"ebiten/utils"
 	"fmt"
 	"math/rand"
-	"path/filepath"
-	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-)
-
-var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
-
-var (
-	cardDir = "./pic/cards"
 )
 
 // combatScene 的结构体
@@ -42,7 +35,7 @@ func (c *Character) DrawCard(drawNum int) {
 	if len(c.DrawDeck) < drawNum {
 		c.DrawDeck = append(c.DrawDeck, c.DiscardDeck...)
 		c.DiscardDeck = nil
-		R.Shuffle(len(c.DrawDeck), func(i, j int) {
+		utils.R.Shuffle(len(c.DrawDeck), func(i, j int) {
 			c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
 		})
 	}
@@ -72,38 +65,35 @@ func (c *Character) PlayCard(index int, enemy *Enemy) {
 	c.CardDiscard(index)
 }
 
+// TODO bugzzhou 可以使用配置化的东西，将每张卡的固定属性写入，通过读取配置的形式来实现不用下面这么大段的重新写
 func GetCards() []CardInfo {
-	att5, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "1.jpg"))
 	c1 := CardInfo{
 		Id:         1,
 		Attack:     5,
 		Shield:     0,
 		SelfAttack: 0,
 		Cost:       1,
-		Image:      att5,
+		Image:      cardImageMap["1"],
 	}
 
-	get2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "2.jpg"))
 	c2 := CardInfo{
 		Id:    2,
 		Cost:  1,
-		Image: get2,
+		Image: cardImageMap["2"],
 	}
 
-	att20, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "3.jpg"))
 	c3 := CardInfo{
 		Id:         3,
 		Attack:     20,
 		SelfAttack: 2,
 		Cost:       2,
-		Image:      att20,
+		Image:      cardImageMap["3"],
 	}
 
-	get4, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "4.jpg"))
 	c4 := CardInfo{
 		Id:    4,
 		Cost:  4,
-		Image: get4,
+		Image: cardImageMap["4"],
 	}
 
 	return []CardInfo{
@@ -111,6 +101,46 @@ func GetCards() []CardInfo {
 		c2, c2, c4, c3, c3,
 	}
 }
+
+// func GetCards() []CardInfo {
+// 	att5, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "1.jpg"))
+// 	c1 := CardInfo{
+// 		Id:         1,
+// 		Attack:     5,
+// 		Shield:     0,
+// 		SelfAttack: 0,
+// 		Cost:       1,
+// 		Image:      att5,
+// 	}
+
+// 	get2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "2.jpg"))
+// 	c2 := CardInfo{
+// 		Id:    2,
+// 		Cost:  1,
+// 		Image: get2,
+// 	}
+
+// 	att20, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "3.jpg"))
+// 	c3 := CardInfo{
+// 		Id:         3,
+// 		Attack:     20,
+// 		SelfAttack: 2,
+// 		Cost:       2,
+// 		Image:      att20,
+// 	}
+
+// 	get4, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "4.jpg"))
+// 	c4 := CardInfo{
+// 		Id:    4,
+// 		Cost:  4,
+// 		Image: get4,
+// 	}
+
+// 	return []CardInfo{
+// 		c1, c1, c1, c1, c1,
+// 		c2, c2, c4, c3, c3,
+// 	}
+// }
 
 func (c *Character) CardAffect(index int, enemy *Enemy) {
 	card := c.HandCards[index]
@@ -121,21 +151,6 @@ func (c *Character) CardAffect(index int, enemy *Enemy) {
 	} else if card.Id == 4 {
 		c.DrawCard(4)
 	}
-
-	// if card.Id == 1 {
-	// 	enemy.Hp -= 5
-	// 	c.Energy -= 1
-	// } else if card.Id == 2 {
-
-	// 	c.Energy -= 1
-	// } else if card.Id == 3 {
-	// 	enemy.Hp -= 20
-	// 	c.Hp -= 2
-	// 	c.Energy -= 1
-	// } else if card.Id == 4 {
-
-	// 	c.Energy -= 2
-	// }
 }
 
 func (c *Character) CardDiscard(index int) {

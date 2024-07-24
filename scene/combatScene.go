@@ -14,24 +14,17 @@ type CombatScene struct {
 }
 
 func NewCombatScene(manager *SceneManager) *CombatScene {
-
 	localCharacter := comm.GetLocalCharacter()
-
 	enemy := comm.GetEnemy()
-
 	gametmp := &sceneCom.Game{
-		Round: 1,
-
-		Character: localCharacter,
-		Enemy:     *enemy,
-
-		RoundBegin: true,
-
+		Round:         1,
+		Character:     localCharacter,
+		Enemy:         *enemy,
+		RoundBegin:    true,
 		DraggingIndex: -1,
 		ExpandIndex:   -1,
 		IsDragging:    false,
 	}
-
 	return &CombatScene{
 		manager: manager,
 		Game:    *gametmp,
@@ -40,18 +33,14 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 
 func (cs *CombatScene) Update() error {
 	g := &cs.Game
-
 	if g.RoundBegin {
 		g.RoundBegin = false
 		sceneCom.SendCards(g)
 	}
 
 	sceneCom.EndCards(g)
-
 	sceneCom.ChangeStatus(g)
-
 	ChangeScene(cs)
-
 	return nil
 }
 

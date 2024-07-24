@@ -20,10 +20,8 @@ import (
 
 var mapIconMap = map[string]*ebiten.Image{}
 
-var mapIconDir = "./pic/mapScene"
-
 func init() {
-	files, ids, err := utils.ListDir(mapIconDir)
+	files, ids, err := utils.ListDir(utils.MapIconDir)
 	if err != nil {
 		fmt.Printf("failed to get files, and err is: %s\n", err.Error())
 		return
@@ -37,7 +35,6 @@ func init() {
 		}
 		mapIconMap[ids[i]] = tmpImage
 	}
-	// fmt.Printf("mapIconMap is: %v\n", mapIconMap)
 }
 
 func DrawMapNode(screen *ebiten.Image, nodes []models.Node) {

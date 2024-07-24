@@ -53,6 +53,6 @@ func ChooseMap(s *MapScene, nodeType string, nodeIndex int) {
 	case ms.EndNode:
 		s.manager.SetScene(NewScene2(s.manager))
 	default:
-		s.manager.SetScene(NewScene1(s.manager)) //需要一个默认的页面， 后续增加新的页面
+		s.manager.SetScene(NewScene1(s.manager)) //TODO bugzzhou 需要一个默认的页面， 后续增加新的页面
 	}
 }
