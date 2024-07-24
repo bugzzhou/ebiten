@@ -9,7 +9,6 @@ import (
 )
 
 // 整个游戏的入口，用于选择地图
-
 type MapScene struct {
 	manager *SceneManager
 	graph   *m.Graph
@@ -48,6 +47,9 @@ func ChooseMap(s *MapScene, nodeType string, nodeIndex int) {
 		s.manager.SetScene(NewCombatScene(s.manager))
 	case ms.CampfireNode:
 		s.manager.SetScene(NewCampfireScene(s.manager))
+	case ms.BossNode:
+		cons.IsBossRoom = true
+		s.manager.SetScene(NewCombatScene(s.manager))
 	case ms.EndNode:
 		s.manager.SetScene(NewScene2(s.manager))
 	default:

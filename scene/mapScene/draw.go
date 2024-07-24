@@ -43,9 +43,7 @@ func init() {
 func DrawMapNode(screen *ebiten.Image, nodes []models.Node) {
 	// Draw nodes
 	for i, node := range nodes {
-		// fmt.Printf("i, node is: %v, %v\n", i, node)
 		drawNodeTypePic(screen, node.NodeType, float64(node.X), float64(node.Y))
-		// vector.DrawFilledCircle(screen, float32(node.X)-5, float32(node.Y)-5, 30, color.RGBA{0, 0, 255, 255}, false)
 
 		text := fmt.Sprintf("%d", i)
 		textWidth := len(text) * 7 // 假设每个字符的宽度为7像素，可以根据实际字体调整

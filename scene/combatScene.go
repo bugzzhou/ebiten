@@ -17,13 +17,7 @@ func NewCombatScene(manager *SceneManager) *CombatScene {
 
 	localCharacter := comm.GetLocalCharacter()
 
-	enemy := &comm.Enemy{}
-
-	if comm.R.Intn(2) == 0 {
-		enemy = comm.GetLocalKaka()
-	} else {
-		enemy = comm.GetTestEnemy()
-	}
+	enemy := comm.GetEnemy()
 
 	gametmp := &sceneCom.Game{
 		Round: 1,

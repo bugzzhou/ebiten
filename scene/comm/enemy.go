@@ -34,10 +34,13 @@ type Buff struct {
 }
 
 const (
-	KakaId = iota
+	KakaId  = iota
+	Boss1Id = 50
 
 	TestEnemyId = 9999
 )
+
+var IsBossRoom bool
 
 // 修改成三个map
 // map[int]map[int]Act enemy下的所有动作
@@ -53,6 +56,12 @@ func init() {
 		KakaActTag: {
 			1: Act{Id: 1, Name: "添加仪式buff", Description: "给予自己3层仪式，每回合增加3点力量"},
 			2: Act{Id: 2, Name: "攻击", Description: "给予对手6+1*力量的伤害"},
+		},
+
+		Boss1ActTag: {
+			1: Act{Id: 1, Name: "重击", Description: "20攻击"},
+			2: Act{Id: 2, Name: "多段", Description: "3*6攻击"},
+			3: Act{Id: 3, Name: "防御", Description: "20护盾"},
 		},
 
 		TestEnemyActTag: {
@@ -103,6 +112,25 @@ func (enemy *Enemy) EnemyAct(round int, character *Character) {
 
 }
 
+func GetEnemy() *Enemy {
+	randn := R.Intn(2)
+	var enemy *Enemy
+
+	if IsBossRoom {
+		return GetBoss1()
+	}
+
+	switch randn {
+	case 0:
+		enemy = GetLocalKaka()
+	case 1:
+		enemy = GetTestEnemy()
+	}
+
+	return enemy
+
+}
+
 // kaka！
 func GetLocalKaka() *Enemy {
 	kakaImage, _, err := ebitenutil.NewImageFromFile(Kaka) // kaka的图片
@@ -130,6 +158,21 @@ func GetTestEnemy() *Enemy {
 		Hp:      50,
 		Hplimit: 50,
 		Action:  getActs(TestEnemyActTag),
+	}
+	return &LocalEnemy
+}
+
+func GetBoss1() *Enemy {
+	bossEnemyImage, _, err := ebitenutil.NewImageFromFile(Boss1)
+	if err != nil {
+		fmt.Printf("failed to get testEnemy pic, and err is: %s\n", err.Error())
+	}
+	LocalEnemy = Enemy{
+		Id:      Boss1Id,
+		Image:   bossEnemyImage,
+		Hp:      200,
+		Hplimit: 200,
+		Action:  getActs(Boss1ActTag),
 	}
 	return &LocalEnemy
 }
@@ -165,5 +208,11 @@ func getActIndex(tag, round int) int {
 	if tag == TestEnemyActTag {
 		return round % 2
 	}
+
+	// 重击、多段、防御 顺序执行
+	if tag == Boss1ActTag {
+		return round % 3
+	}
+
 	return 0
 }

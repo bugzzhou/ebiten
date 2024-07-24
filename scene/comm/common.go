@@ -16,6 +16,8 @@ const (
 const (
 	KakaActTag = iota
 
+	Boss1ActTag = 50
+
 	TestEnemyActTag = 9999
 )
 
@@ -25,6 +27,7 @@ var (
 	Rough  = "./pic/rough.jpg"
 
 	TestEnemy = "./pic/test_enemy.jpg"
+	Boss1     = "./pic/test_enemy.jpg" //TODO bugzzhou 替换boss图片
 )
 
 var (
