@@ -1,6 +1,8 @@
 package combatscene
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
@@ -63,6 +65,7 @@ func isMouseOverEnemy() bool {
 
 func enemyIsEnough(g *Game, index int) bool {
 	c := g.Character.HandCards[index]
+	fmt.Printf("energy, cost are: %v, %v\n", g.Character.Energy, c.Cost)
 	return g.Character.Energy >= c.Cost
 }
 

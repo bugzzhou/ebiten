@@ -5,8 +5,10 @@ import (
 	"ebiten/utils"
 	"fmt"
 	"math/rand"
+	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 // combatScene 的结构体
@@ -21,6 +23,62 @@ type Character struct {
 	DrawDeck    []CardInfo
 	HandCards   []CardInfo
 	DiscardDeck []CardInfo
+}
+
+func init() {
+	cardImageMap = make(map[int]*ebiten.Image)
+	files, ids, err := utils.ListDir(utils.CardDir)
+	if err != nil {
+		fmt.Printf("failed to get files, and err is: %s\n", err.Error())
+		return
+	}
+
+	for i := range files {
+		idInt, err := strconv.Atoi(ids[i])
+		if err != nil {
+			fmt.Printf("failed to get convert, and err is: %s\n", err.Error())
+			continue
+		}
+
+		tmpImage, _, err := ebitenutil.NewImageFromFile(files[i])
+		if err != nil {
+			fmt.Printf("failed to get image: %s, and err is: %s\n", files[i], err.Error())
+			continue
+		}
+		cardImageMap[idInt] = tmpImage
+	}
+
+	allCardsMap = make(map[int]CardInfo)
+	allCardBaseinfo, err := readCSVFile(utils.CardInfoPath)
+	if err != nil {
+		fmt.Printf("failed to read csv, and err is: %s\n", err.Error())
+	}
+	for _, v := range allCardBaseinfo {
+		v.Image = cardImageMap[v.Id]
+		allCardsMap[v.Id] = v
+	}
+
+	cha, _, err := ebitenutil.NewImageFromFile(utils.Lieren) // 猎人的图片
+	if err != nil {
+		fmt.Printf("failed to get lieren pic, and err is: %s\n", err.Error())
+	}
+
+	LocalCharacter = Character{
+		Image:   cha,
+		Hp:      99,
+		Hplimit: 99,
+		Energy:  3,
+	}
+
+	initCards := GetCards()
+	LocalCharacter = Character{
+		Image:    cha,
+		Hp:       99,
+		Hplimit:  99,
+		Energy:   3,
+		Cards:    initCards,
+		DrawDeck: initCards,
+	}
 }
 
 func (c *Character) Shuffle() {
@@ -65,75 +123,36 @@ func (c *Character) PlayCard(index int, enemy *Enemy) {
 	c.CardDiscard(index)
 }
 
-// TODO bugzzhou 可以使用配置化的东西，将每张卡的固定属性写入，通过读取配置的形式来实现不用下面这么大段的重新写
-func GetCards() []CardInfo {
-	c1 := CardInfo{
-		Id:         1,
-		Attack:     5,
-		Shield:     0,
-		SelfAttack: 0,
-		Cost:       1,
-		Image:      cardImageMap[1],
-	}
-
-	c2 := CardInfo{
-		Id:    2,
-		Cost:  1,
-		Image: cardImageMap[2],
-	}
-
-	c3 := CardInfo{
-		Id:         3,
-		Attack:     20,
-		SelfAttack: 2,
-		Cost:       2,
-		Image:      cardImageMap[3],
-	}
-
-	c4 := CardInfo{
-		Id:    4,
-		Cost:  4,
-		Image: cardImageMap[4],
-	}
-
-	return []CardInfo{
-		c1, c1, c1, c1, c1,
-		c2, c2, c4, c3, c3,
-	}
-}
-
+// // TODO bugzzhou 可以使用配置化的东西，将每张卡的固定属性写入，通过读取配置的形式来实现不用下面这么大段的重新写
 // func GetCards() []CardInfo {
-// 	att5, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "1.jpg"))
+// 	fmt.Printf("cardImageMap are: %#v\n", cardImageMap)
 // 	c1 := CardInfo{
 // 		Id:         1,
 // 		Attack:     5,
 // 		Shield:     0,
 // 		SelfAttack: 0,
 // 		Cost:       1,
-// 		Image:      att5,
+// 		Image:      cardImageMap[1],
 // 	}
 
-// 	get2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "2.jpg"))
 // 	c2 := CardInfo{
 // 		Id:    2,
 // 		Cost:  1,
-// 		Image: get2,
+// 		Image: cardImageMap[2],
 // 	}
 
-// 	att20, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "3.jpg"))
 // 	c3 := CardInfo{
 // 		Id:         3,
 // 		Attack:     20,
 // 		SelfAttack: 2,
 // 		Cost:       2,
-// 		Image:      att20,
+// 		Image:      cardImageMap[3],
 // 	}
 
-// 	get4, _, _ := ebitenutil.NewImageFromFile(filepath.Join(utils.CardDir, "4.jpg"))
 // 	c4 := CardInfo{
 // 		Id:    4,
 // 		Cost:  4,
-// 		Image: get4,
+// 		Image: cardImageMap[4],
 // 	}
 
 // 	return []CardInfo{
@@ -141,6 +160,21 @@ func GetCards() []CardInfo {
 // 		c2, c2, c4, c3, c3,
 // 	}
 // }
+
+// TODO bugzzhou 可以使用配置化的东西，将每张卡的固定属性写入，通过读取配置的形式来实现不用下面这么大段的重新写
+func GetCards() []CardInfo {
+
+	c1 := allCardsMap[1]
+	c2 := allCardsMap[2]
+	c3 := allCardsMap[3]
+	c4 := allCardsMap[4]
+	c5 := allCardsMap[5]
+
+	return []CardInfo{
+		c1, c1, c1, c1, c5,
+		c2, c2, c4, c3, c3,
+	}
+}
 
 func (c *Character) CardAffect(index int, enemy *Enemy) {
 	card := c.HandCards[index]
@@ -160,7 +194,6 @@ func (c *Character) CardDiscard(index int) {
 
 func affectByCard(c *Character, e *Enemy, card *CardInfo) {
 	c.Shield += card.Shield
-	fmt.Printf("%v, %v, %v\n", card.Attack, e.Shield, e.Hp)
 	c.Hp -= card.SelfAttack
 	c.Energy -= card.Cost
 
@@ -170,5 +203,4 @@ func affectByCard(c *Character, e *Enemy, card *CardInfo) {
 		e.Hp -= (card.Attack - e.Shield)
 		e.Shield = 0
 	}
-	fmt.Printf("%v, %v, %v\n", card.Attack, e.Shield, e.Hp)
 }

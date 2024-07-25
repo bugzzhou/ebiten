@@ -21,6 +21,7 @@ import (
 var mapIconMap = map[string]*ebiten.Image{}
 
 func init() {
+	mapIconMap = make(map[string]*ebiten.Image)
 	files, ids, err := utils.ListDir(utils.MapIconDir)
 	if err != nil {
 		fmt.Printf("failed to get files, and err is: %s\n", err.Error())
@@ -29,6 +30,7 @@ func init() {
 
 	for i := range files {
 		tmpImage, _, err := ebitenutil.NewImageFromFile(files[i])
+		// fmt.Printf("tmpImage is: %#v\n", tmpImage)
 		if err != nil {
 			fmt.Printf("failed to get image: %s, and err is: %s\n", files[i], err.Error())
 			continue
@@ -62,6 +64,9 @@ func DrawMapNode(screen *ebiten.Image, nodes []models.Node) {
 	// Draw edges
 	for _, node := range nodes {
 		for _, adj := range node.AdjList {
+			if adj < 0 {
+				continue
+			}
 			adjNode := nodes[adj]
 			vector.StrokeLine(screen, float32(node.X), float32(node.Y), float32(adjNode.X), float32(adjNode.Y), 1, color.White, false)
 		}
@@ -71,6 +76,5 @@ func DrawMapNode(screen *ebiten.Image, nodes []models.Node) {
 func drawNodeTypePic(screen *ebiten.Image, nodeType string, x1, y1 float64) {
 	chaOpt := &ebiten.DrawImageOptions{}
 	chaOpt.GeoM.Translate(x1, y1)
-	// fmt.Printf("nodeType, chOpt is: %v, %v\n", nodeType, chaOpt)
 	screen.DrawImage(mapIconMap[nodeType], chaOpt)
 }

@@ -4,6 +4,7 @@ import (
 	cons "ebiten/scene/comm"
 	ms "ebiten/scene/mapScene"
 	m "ebiten/scene/models"
+	"ebiten/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -43,14 +44,14 @@ func ChooseMap(s *MapScene, nodeType string, nodeIndex int) {
 	s.graph.Nodes[nodeIndex].Explored = true
 
 	switch nodeType {
-	case ms.CombatNode:
+	case utils.CombatNode:
 		s.manager.SetScene(NewCombatScene(s.manager))
-	case ms.CampfireNode:
+	case utils.CampfireNode:
 		s.manager.SetScene(NewCampfireScene(s.manager))
-	case ms.BossNode:
+	case utils.BossNode:
 		cons.IsBossRoom = true
 		s.manager.SetScene(NewCombatScene(s.manager))
-	case ms.EndNode:
+	case utils.EndNode:
 		s.manager.SetScene(NewScene2(s.manager))
 	default:
 		s.manager.SetScene(NewScene1(s.manager)) //TODO bugzzhou 需要一个默认的页面， 后续增加新的页面

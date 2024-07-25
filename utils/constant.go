@@ -37,3 +37,12 @@ const (
 const (
 	CampFileFlag = iota
 )
+
+const (
+	StartNode    = "start"
+	CombatNode   = "combat"
+	CampfireNode = "fire"
+	RandomNode   = "random"
+	EndNode      = "end"
+	BossNode     = "boss"
+)

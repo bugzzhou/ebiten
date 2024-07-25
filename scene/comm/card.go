@@ -1,9 +1,7 @@
 package comm
 
 import (
-	"ebiten/utils"
 	"encoding/csv"
-	"fmt"
 	"io"
 	"os"
 	"strconv"
@@ -24,17 +22,6 @@ type CardInfo struct {
 }
 
 var allCardsMap map[int]CardInfo
-
-func init() {
-	allCardBaseinfo, err := readCSVFile(utils.CardInfoPath)
-	if err != nil {
-		fmt.Printf("failed to read csv, and err is: %s\n", err.Error())
-	}
-	for _, v := range allCardBaseinfo {
-		v.Image = cardImageMap[v.Id]
-		allCardsMap[v.Id] = v
-	}
-}
 
 func readCSVFile(filename string) ([]CardInfo, error) {
 	file, err := os.Open(filename)

@@ -1,10 +1,5 @@
 package models
 
-//1
-//
-//1
-//
-//1
 //mapScene 的结构体
 type Node struct {
 	Id       int

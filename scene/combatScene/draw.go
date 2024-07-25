@@ -109,7 +109,6 @@ func DrawManyCards(g *Game, screen *ebiten.Image) {
 		} else {
 			chaOpt.GeoM.Translate(float64(handXY[i].X), float64(handXY[i].Y))
 		}
-
 		screen.DrawImage(v.Image, chaOpt)
 	}
 }
