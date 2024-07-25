@@ -10,10 +10,6 @@ import (
 
 var AmountOfRecoveryOfHp = 25
 
-// func Recover(c *comm.Character) {
-// 	c.Hp = utils.Min(c.Hp+AmountOfRecoveryOfHp, c.Hplimit)
-// }
-
 func Recover(c *comm.Character) bool {
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()

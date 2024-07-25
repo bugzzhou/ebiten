@@ -3,6 +3,7 @@ package comm
 import (
 	"ebiten/utils"
 	"fmt"
+	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -31,14 +32,14 @@ func init() {
 		Energy:  3,
 	}
 
-	allCards := GetCards()
+	initCards := GetCards()
 	LocalCharacter = Character{
 		Image:    cha,
 		Hp:       99,
 		Hplimit:  99,
 		Energy:   99,
-		Cards:    allCards,
-		DrawDeck: allCards,
+		Cards:    initCards,
+		DrawDeck: initCards,
 	}
 }
 
@@ -52,7 +53,7 @@ func GetLocalCharacter() *Character {
 
 // 用于存放卡牌的图片
 // key:value = 卡牌id:图片
-var cardImageMap = map[string]*ebiten.Image{}
+var cardImageMap = map[int]*ebiten.Image{}
 
 func init() {
 	files, ids, err := utils.ListDir(utils.CardDir)
@@ -62,11 +63,17 @@ func init() {
 	}
 
 	for i := range files {
+		idInt, err := strconv.Atoi(ids[i])
+		if err != nil {
+			fmt.Printf("failed to get convert, and err is: %s\n", err.Error())
+			continue
+		}
+
 		tmpImage, _, err := ebitenutil.NewImageFromFile(files[i])
 		if err != nil {
 			fmt.Printf("failed to get image: %s, and err is: %s\n", files[i], err.Error())
 			continue
 		}
-		cardImageMap[ids[i]] = tmpImage
+		cardImageMap[idInt] = tmpImage
 	}
 }

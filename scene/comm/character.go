@@ -73,13 +73,13 @@ func GetCards() []CardInfo {
 		Shield:     0,
 		SelfAttack: 0,
 		Cost:       1,
-		Image:      cardImageMap["1"],
+		Image:      cardImageMap[1],
 	}
 
 	c2 := CardInfo{
 		Id:    2,
 		Cost:  1,
-		Image: cardImageMap["2"],
+		Image: cardImageMap[2],
 	}
 
 	c3 := CardInfo{
@@ -87,13 +87,13 @@ func GetCards() []CardInfo {
 		Attack:     20,
 		SelfAttack: 2,
 		Cost:       2,
-		Image:      cardImageMap["3"],
+		Image:      cardImageMap[3],
 	}
 
 	c4 := CardInfo{
 		Id:    4,
 		Cost:  4,
-		Image: cardImageMap["4"],
+		Image: cardImageMap[4],
 	}
 
 	return []CardInfo{

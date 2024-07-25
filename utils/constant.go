@@ -13,6 +13,8 @@ var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 var (
 	CardDir = "./pic/cards"
 
+	CardInfoPath = "./utils/cards.csv"
+
 	Lieren = "./pic/lieren.jpg"
 	Kaka   = "./pic/kaka.jpg"
 	Rough  = "./pic/rough.jpg"
