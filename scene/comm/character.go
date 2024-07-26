@@ -5,10 +5,8 @@ import (
 	"ebiten/utils"
 	"fmt"
 	"math/rand"
-	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 // combatScene 的结构体
@@ -23,69 +21,6 @@ type Character struct {
 	DrawDeck    []CardInfo
 	HandCards   []CardInfo
 	DiscardDeck []CardInfo
-}
-
-func init() {
-	cardImageMap = make(map[int]*ebiten.Image)
-	files, ids, err := utils.ListDir(utils.CardDir)
-	if err != nil {
-		fmt.Printf("failed to get files, and err is: %s\n", err.Error())
-		return
-	}
-
-	for i := range files {
-		idInt, err := strconv.Atoi(ids[i])
-		if err != nil {
-			fmt.Printf("failed to get convert, and err is: %s\n", err.Error())
-			continue
-		}
-
-		tmpImage, _, err := ebitenutil.NewImageFromFile(files[i])
-		if err != nil {
-			fmt.Printf("failed to get image: %s, and err is: %s\n", files[i], err.Error())
-			continue
-		}
-		cardImageMap[idInt] = tmpImage
-	}
-
-	allCardsMap = make(map[int]CardInfo)
-	allCardBaseinfo, err := readCSVFile(utils.CardInfoPath)
-	if err != nil {
-		fmt.Printf("failed to read csv, and err is: %s\n", err.Error())
-	}
-	for _, v := range allCardBaseinfo {
-		v.Image = cardImageMap[v.Id]
-		allCardsMap[v.Id] = v
-	}
-
-	cha, _, err := ebitenutil.NewImageFromFile(utils.Lieren) // 猎人的图片
-	if err != nil {
-		fmt.Printf("failed to get lieren pic, and err is: %s\n", err.Error())
-	}
-
-	LocalCharacter = Character{
-		Image:   cha,
-		Hp:      99,
-		Hplimit: 99,
-		Energy:  3,
-	}
-
-	initCards := GetCards()
-	LocalCharacter = Character{
-		Image:    cha,
-		Hp:       99,
-		Hplimit:  99,
-		Energy:   3,
-		Cards:    initCards,
-		DrawDeck: initCards,
-	}
-}
-
-func (c *Character) Shuffle() {
-	rand.Shuffle(len(c.DrawDeck), func(i, j int) {
-		c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
-	})
-
 }
 
 func (c *Character) DrawCard(drawNum int) {
@@ -119,64 +54,26 @@ func (c *Character) PlayCard(index int, enemy *Enemy) {
 		return
 	}
 
-	c.CardAffect(index, enemy)
-	c.CardDiscard(index)
+	c.cardAffect(index, enemy)
+	c.cardDiscard(index)
 }
 
-// // TODO bugzzhou 可以使用配置化的东西，将每张卡的固定属性写入，通过读取配置的形式来实现不用下面这么大段的重新写
-// func GetCards() []CardInfo {
-// 	fmt.Printf("cardImageMap are: %#v\n", cardImageMap)
-// 	c1 := CardInfo{
-// 		Id:         1,
-// 		Attack:     5,
-// 		Shield:     0,
-// 		SelfAttack: 0,
-// 		Cost:       1,
-// 		Image:      cardImageMap[1],
-// 	}
-
-// 	c2 := CardInfo{
-// 		Id:    2,
-// 		Cost:  1,
-// 		Image: cardImageMap[2],
-// 	}
-
-// 	c3 := CardInfo{
-// 		Id:         3,
-// 		Attack:     20,
-// 		SelfAttack: 2,
-// 		Cost:       2,
-// 		Image:      cardImageMap[3],
-// 	}
-
-// 	c4 := CardInfo{
-// 		Id:    4,
-// 		Cost:  4,
-// 		Image: cardImageMap[4],
-// 	}
-
-// 	return []CardInfo{
-// 		c1, c1, c1, c1, c1,
-// 		c2, c2, c4, c3, c3,
-// 	}
-// }
-
-// TODO bugzzhou 可以使用配置化的东西，将每张卡的固定属性写入，通过读取配置的形式来实现不用下面这么大段的重新写
-func GetCards() []CardInfo {
-
-	c1 := allCardsMap[1]
-	c2 := allCardsMap[2]
-	c3 := allCardsMap[3]
-	c4 := allCardsMap[4]
-	c5 := allCardsMap[5]
-
-	return []CardInfo{
-		c1, c1, c1, c1, c5,
-		c2, c2, c4, c3, c3,
-	}
+func GetLocalCharacter() *Character {
+	LocalCharacter.Energy = 3
+	LocalCharacter.DrawDeck = LocalCharacter.Cards
+	LocalCharacter.HandCards = nil
+	LocalCharacter.DiscardDeck = nil
+	return &LocalCharacter
 }
 
-func (c *Character) CardAffect(index int, enemy *Enemy) {
+// 包内函数
+func (c *Character) Shuffle() {
+	rand.Shuffle(len(c.DrawDeck), func(i, j int) {
+		c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
+	})
+}
+
+func (c *Character) cardAffect(index int, enemy *Enemy) {
 	card := c.HandCards[index]
 	affectByCard(c, enemy, &card)
 
@@ -187,7 +84,7 @@ func (c *Character) CardAffect(index int, enemy *Enemy) {
 	}
 }
 
-func (c *Character) CardDiscard(index int) {
+func (c *Character) cardDiscard(index int) {
 	c.DiscardDeck = append(c.DiscardDeck, c.HandCards[index])
 	c.HandCards = append(c.HandCards[:index], c.HandCards[index+1:]...)
 }

@@ -1,13 +1,11 @@
 package utils
 
 import (
-	"time"
-
 	"math/rand"
+	"time"
 )
 
 // 用于存放各种常量、变量、路径
-
 var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 var (
@@ -45,4 +43,9 @@ const (
 	RandomNode   = "random"
 	EndNode      = "end"
 	BossNode     = "boss"
+)
+
+const (
+	ScreenWidth  = 1400
+	ScreenHeight = 750
 )

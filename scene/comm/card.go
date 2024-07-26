@@ -11,16 +11,18 @@ import (
 
 // 唯一标识一个卡牌
 type CardInfo struct {
-	Id int
+	Id    int
+	Image *ebiten.Image
 
 	Attack     int
 	Shield     int
 	SelfAttack int
 	Cost       int
-
-	Image *ebiten.Image
 }
 
+// 用于存放卡牌的图片
+// key:value = 卡牌id:图片
+var cardImageMap map[int]*ebiten.Image
 var allCardsMap map[int]CardInfo
 
 func readCSVFile(filename string) ([]CardInfo, error) {

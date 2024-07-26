@@ -36,7 +36,7 @@ func (s *MapScene) Draw(screen *ebiten.Image) {
 }
 
 func (s *MapScene) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return cons.ScreenWidth, cons.ScreenHeight
+	return utils.ScreenWidth, utils.ScreenHeight
 }
 
 func ChooseMap(s *MapScene, nodeType string, nodeIndex int) {

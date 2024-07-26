@@ -7,10 +7,8 @@ import (
 )
 
 const (
-	ScreenWidth  = 1400
-	ScreenHeight = 750
-	imageWidth   = 150
-	imageHeight  = 200
+	imageWidth  = 150
+	imageHeight = 200
 )
 
 // TODO bugzzhou

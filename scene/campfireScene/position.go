@@ -12,7 +12,6 @@ type HandcardXY struct {
 	Y int
 }
 
-// 供ebiten.DrawImageOptions.GeoM.Translate(x, y)使用
 func GetXY(flag int) (x, y float64) {
 	switch flag {
 	case utils.CampFileFlag:

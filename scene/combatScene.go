@@ -3,6 +3,7 @@ package scene
 import (
 	sceneCom "ebiten/scene/combatScene"
 	"ebiten/scene/comm"
+	"ebiten/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -53,7 +54,7 @@ func (cs *CombatScene) Draw(screen *ebiten.Image) {
 }
 
 func (g *CombatScene) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return comm.ScreenWidth, comm.ScreenHeight
+	return utils.ScreenWidth, utils.ScreenHeight
 }
 
 // 胜利或者失败，跳转不同的场景

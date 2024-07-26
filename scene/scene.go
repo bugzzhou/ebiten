@@ -1,7 +1,7 @@
 package scene
 
 import (
-	cons "ebiten/scene/comm"
+	"ebiten/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -39,9 +39,9 @@ func (sm *SceneManager) Draw(screen *ebiten.Image) {
 
 func (sm *SceneManager) Layout(outsideWidth, outsideHeight int) (int, int) {
 	if sm.currentScene != nil {
-		return sm.currentScene.Layout(cons.ScreenWidth, cons.ScreenHeight)
+		return sm.currentScene.Layout(utils.ScreenWidth, utils.ScreenHeight)
 	}
-	return cons.ScreenWidth, cons.ScreenHeight
+	return utils.ScreenWidth, utils.ScreenHeight
 }
 
 func (sm *SceneManager) SetScene(scene Scene) {

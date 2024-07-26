@@ -3,6 +3,7 @@ package scene
 import (
 	campfirescene "ebiten/scene/campfireScene"
 	cons "ebiten/scene/comm"
+	"ebiten/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -31,5 +32,5 @@ func (s *CampfireScene) Draw(screen *ebiten.Image) {
 }
 
 func (s *CampfireScene) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return cons.ScreenWidth, cons.ScreenHeight
+	return utils.ScreenWidth, utils.ScreenHeight
 }

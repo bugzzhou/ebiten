@@ -36,47 +36,11 @@ type Buff struct {
 
 var IsBossRoom bool
 
-// 修改成三个map
+// 修改成两个map
 // map[int]map[int]Act enemy下的所有动作
-// map[enemyName][int]int ， enemy第n个回合，enemy采取的动作是所有动作中第m个
 // map[int]Buff， key是唯一标识，value是单个buff的具体信息
 var actsMap map[int]map[int]Act
-
-// var actINdexMap map[int][][]int
 var buffMap map[int]Buff
-
-func init() {
-	actsMap = map[int]map[int]Act{
-		utils.KakaId: {
-			1: Act{Id: 1, Name: "添加仪式buff", Description: "给予自己3层仪式，每回合增加3点力量"},
-			2: Act{Id: 2, Name: "攻击", Description: "给予对手6+1*力量的伤害"},
-		},
-
-		utils.Boss1Id: {
-			1: Act{Id: 1, Name: "重击", Description: "20攻击"},
-			2: Act{Id: 2, Name: "多段", Description: "3*6攻击"},
-			3: Act{Id: 3, Name: "防御", Description: "20护盾"},
-		},
-
-		utils.TestEnemyId: {
-			1: Act{Id: 1, Name: "攻击", Description: "给英雄单位造成6点伤害"},
-			2: Act{Id: 2, Name: "防御", Description: "给自己提供5点护盾"},
-		},
-	}
-
-	buffMap = map[int]Buff{
-		1: {
-			Id:          1,
-			Name:        "仪式",
-			Description: "每回合增加3点力量",
-
-			Layers:     3,
-			StartRound: 1,
-			EndRound:   -1, //永远不会消失
-		},
-	}
-
-}
 
 // 主要函数
 func (enemy *Enemy) EnemyAct(round int, character *Character) {
@@ -185,6 +149,10 @@ func GetBoss1() *Enemy {
 // 	}
 // 	return &LocalEnemy
 // }
+
+/*
+	包内函数
+*/
 
 func getActs(tag int) map[int]Act {
 	return actsMap[tag]
