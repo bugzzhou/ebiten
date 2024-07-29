@@ -135,25 +135,7 @@ func GetBoss1() *Enemy {
 	return &LocalEnemy
 }
 
-// // 面团
-// func GetDough() *Enemy {
-// 	roughImage, _, err := ebitenutil.NewImageFromFile(Rough) // TODO bugzzhou 面团的图片替换
-// 	if err != nil {
-// 		fmt.Printf("failed to get lieren pic, and err is: %s\n", err.Error())
-// 	}
-// 	LocalEnemy = Enemy{
-// 		Image:   roughImage,
-// 		Hp:      50,
-// 		Hplimit: 50,
-// 		Action:  getActs(utils.KakaId),
-// 	}
-// 	return &LocalEnemy
-// }
-
-/*
-	包内函数
-*/
-
+// 包内函数
 func getActs(tag int) map[int]Act {
 	return actsMap[tag]
 }

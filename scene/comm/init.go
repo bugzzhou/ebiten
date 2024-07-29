@@ -87,6 +87,7 @@ func getInitCards() []CardInfo {
 	所有与enemy相关的初始化数据
 
 TODO jszhou 把act、buff格式化。 类似卡牌一样的实现
+Tips: 配置化是为了实现具体内容的时候可以通过通用函数直接实现，而不是为了配置化而配置化，请注意！
 */
 func initActMap() {
 	actsMap = map[int]map[int]Act{

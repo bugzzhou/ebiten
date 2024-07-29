@@ -66,13 +66,21 @@ func GetLocalCharacter() *Character {
 	return &LocalCharacter
 }
 
-// 包内函数
 func (c *Character) Shuffle() {
 	rand.Shuffle(len(c.DrawDeck), func(i, j int) {
 		c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
 	})
 }
 
+// 包内函数
+
+/*
+	※1 卡牌生效函数
+
+1、卡牌基础属性通过配置实现，并且通过一个通用函数使用
+2、卡牌的特殊效果需要专门实现。
+TODO bugzzhou 卡牌的特殊效果，是否用一个函数再封装一层？
+*/
 func (c *Character) cardAffect(index int, enemy *Enemy) {
 	card := c.HandCards[index]
 	affectByCard(c, enemy, &card)
