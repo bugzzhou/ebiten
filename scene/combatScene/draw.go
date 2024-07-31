@@ -1,6 +1,7 @@
 package combatscene
 
 import (
+	"ebiten/utils"
 	"fmt"
 	"image/color"
 
@@ -79,7 +80,7 @@ func drawHpAndShield(screen *ebiten.Image, x, y, hp, hplimit, shield int) {
 
 func EndTurnButton(screen *ebiten.Image) {
 	// 设置结束回合按钮
-	x, y, width, height := ScreenWidth-50, 0, 50, 50
+	x, y, width, height := utils.ScreenWidth-50, 0, 50, 50
 
 	boxColor := color.RGBA{0, 255, 255, 255}
 	vector.DrawFilledRect(screen, float32(x), float32(y), float32(width), float32(height), boxColor, false)
@@ -109,7 +110,6 @@ func DrawManyCards(g *Game, screen *ebiten.Image) {
 		} else {
 			chaOpt.GeoM.Translate(float64(handXY[i].X), float64(handXY[i].Y))
 		}
-
 		screen.DrawImage(v.Image, chaOpt)
 	}
 }

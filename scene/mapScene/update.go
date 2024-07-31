@@ -3,7 +3,6 @@ package mapscene
 import (
 	"ebiten/scene/models"
 	"ebiten/utils"
-	"fmt"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -16,7 +15,6 @@ func CheckNodeSite(nodes []models.Node) (string, int) {
 		x, y := ebiten.CursorPosition()
 		for i, node := range nodes {
 			if IsPointInCircle(x, y, node.X, node.Y, 30) && roomIndexIsAbleToChoose(nodes, i) {
-				fmt.Printf("Clicked node %d\n", i)
 				nodeType = node.NodeType
 				nodeIndex = i
 				break

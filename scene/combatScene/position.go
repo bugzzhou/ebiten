@@ -1,12 +1,14 @@
 package combatscene
 
 import (
+	"ebiten/utils"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
-	centerX = ScreenWidth / 2
-	centerY = ScreenHeight / 2
+	centerX = utils.ScreenWidth / 2
+	centerY = utils.ScreenHeight / 2
 
 	roleWidth  = 150
 	roleHeight = 150
@@ -44,11 +46,11 @@ func GetXY(flag int) (x, y float64) {
 	case CharacterPos:
 		return 0, centerY - roleHeight/2
 	case EnemyPos:
-		return ScreenWidth - roleWidth, centerY - roleHeight/2
+		return utils.ScreenWidth - roleWidth, centerY - roleHeight/2
 	case SendButton:
 		return 25, 25
 	case EndButton:
-		return ScreenWidth - 25, 25
+		return utils.ScreenWidth - 25, 25
 	case KakaActButtonFlag:
 		return 150, 25
 	case TestFlag:
@@ -66,11 +68,11 @@ func GetXYRange(flag int) (x1, x2, y1, y2 float64) {
 	case CharacterPos:
 		return 0, roleWidth, centerY - roleHeight/2, centerY + roleHeight/2
 	case EnemyPos:
-		return ScreenWidth - roleWidth, ScreenWidth, centerY - roleHeight/2, centerY + roleHeight/2
+		return utils.ScreenWidth - roleWidth, utils.ScreenWidth, centerY - roleHeight/2, centerY + roleHeight/2
 	case SendButton:
 		return 0, 50, 0, 50
 	case EndButton:
-		return ScreenWidth - 50, ScreenWidth, 0, 50
+		return utils.ScreenWidth - 50, utils.ScreenWidth, 0, 50
 	case KakaActButtonFlag:
 		return 100, 200, 0, 50
 	case TestFlag:
@@ -87,11 +89,11 @@ func GetXYRangeInt(flag int) (x1, x2, y1, y2 int) {
 	case CharacterPos:
 		return 0, roleWidth, centerY - roleHeight/2, centerY + roleHeight/2
 	case EnemyPos:
-		return ScreenWidth - roleWidth, ScreenWidth, centerY - roleHeight/2, centerY + roleHeight/2
+		return utils.ScreenWidth - roleWidth, utils.ScreenWidth, centerY - roleHeight/2, centerY + roleHeight/2
 	case SendButton:
 		return 0, 50, 0, 50
 	case EndButton:
-		return ScreenWidth - 50, ScreenWidth, 0, 50
+		return utils.ScreenWidth - 50, utils.ScreenWidth, 0, 50
 	case KakaActButtonFlag:
 		return 100, 200, 0, 50
 	case TestFlag:
@@ -130,7 +132,7 @@ func getHandcardXYs(count int) []HandcardXY {
 	for _, v := range tmpX {
 		tmpXY := HandcardXY{
 			X: v,
-			Y: ScreenHeight - imageHeight,
+			Y: utils.ScreenHeight - imageHeight,
 		}
 		res = append(res, tmpXY)
 	}
@@ -147,7 +149,7 @@ func getExpandIndex(count int) int {
 		return -1
 	}
 
-	if y < ScreenHeight-imageHeight || y > ScreenHeight || x < xys[0].X || x > xys[len(xys)-1].X+imageWidth {
+	if y < utils.ScreenHeight-imageHeight || y > utils.ScreenHeight || x < xys[0].X || x > xys[len(xys)-1].X+imageWidth {
 		return -1
 	}
 

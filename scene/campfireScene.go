@@ -3,10 +3,10 @@ package scene
 import (
 	campfirescene "ebiten/scene/campfireScene"
 	cons "ebiten/scene/comm"
+	"ebiten/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 // 火堆场景
@@ -19,7 +19,8 @@ func NewCampfireScene(manager *SceneManager) *CampfireScene {
 }
 
 func (s *CampfireScene) Update() error {
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+	ok := campfirescene.Recover(cons.GetLocalCharacter())
+	if ok {
 		s.manager.SetScene(NewMapScene(s.manager))
 	}
 	return nil
@@ -31,5 +32,5 @@ func (s *CampfireScene) Draw(screen *ebiten.Image) {
 }
 
 func (s *CampfireScene) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return cons.ScreenWidth, cons.ScreenHeight
+	return utils.ScreenWidth, utils.ScreenHeight
 }

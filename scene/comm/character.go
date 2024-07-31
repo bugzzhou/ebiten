@@ -1,19 +1,12 @@
 package comm
 
 import (
+	// "ebiten/utils"
+	"ebiten/utils"
 	"fmt"
 	"math/rand"
-	"path/filepath"
-	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-)
-
-var R *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
-
-var (
-	cardDir = "./pic/cards"
 )
 
 // combatScene 的结构体
@@ -30,19 +23,12 @@ type Character struct {
 	DiscardDeck []CardInfo
 }
 
-func (c *Character) Shuffle() {
-	rand.Shuffle(len(c.DrawDeck), func(i, j int) {
-		c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
-	})
-
-}
-
 func (c *Character) DrawCard(drawNum int) {
 	// 弃牌堆 - > 抽牌堆
 	if len(c.DrawDeck) < drawNum {
 		c.DrawDeck = append(c.DrawDeck, c.DiscardDeck...)
 		c.DiscardDeck = nil
-		R.Shuffle(len(c.DrawDeck), func(i, j int) {
+		utils.R.Shuffle(len(c.DrawDeck), func(i, j int) {
 			c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
 		})
 	}
@@ -68,51 +54,34 @@ func (c *Character) PlayCard(index int, enemy *Enemy) {
 		return
 	}
 
-	c.CardAffect(index, enemy)
-	c.CardDiscard(index)
+	c.cardAffect(index, enemy)
+	c.cardDiscard(index)
 }
 
-func GetCards() []CardInfo {
-	att5, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "1.jpg"))
-	c1 := CardInfo{
-		Id:         1,
-		Attack:     5,
-		Shield:     0,
-		SelfAttack: 0,
-		Cost:       1,
-		Image:      att5,
-	}
-
-	get2, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "2.jpg"))
-	c2 := CardInfo{
-		Id:    2,
-		Cost:  1,
-		Image: get2,
-	}
-
-	att20, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "3.jpg"))
-	c3 := CardInfo{
-		Id:         3,
-		Attack:     20,
-		SelfAttack: 2,
-		Cost:       2,
-		Image:      att20,
-	}
-
-	get4, _, _ := ebitenutil.NewImageFromFile(filepath.Join(cardDir, "4.jpg"))
-	c4 := CardInfo{
-		Id:    4,
-		Cost:  4,
-		Image: get4,
-	}
-
-	return []CardInfo{
-		c1, c1, c1, c1, c1,
-		c2, c2, c4, c3, c3,
-	}
+func GetLocalCharacter() *Character {
+	LocalCharacter.Energy = 3
+	LocalCharacter.DrawDeck = LocalCharacter.Cards
+	LocalCharacter.HandCards = nil
+	LocalCharacter.DiscardDeck = nil
+	return &LocalCharacter
 }
 
-func (c *Character) CardAffect(index int, enemy *Enemy) {
+func (c *Character) Shuffle() {
+	rand.Shuffle(len(c.DrawDeck), func(i, j int) {
+		c.DrawDeck[i], c.DrawDeck[j] = c.DrawDeck[j], c.DrawDeck[i]
+	})
+}
+
+// 包内函数
+
+/*
+	※1 卡牌生效函数
+
+1、卡牌基础属性通过配置实现，并且通过一个通用函数使用
+2、卡牌的特殊效果需要专门实现。
+TODO bugzzhou 卡牌的特殊效果，是否用一个函数再封装一层？
+*/
+func (c *Character) cardAffect(index int, enemy *Enemy) {
 	card := c.HandCards[index]
 	affectByCard(c, enemy, &card)
 
@@ -121,31 +90,15 @@ func (c *Character) CardAffect(index int, enemy *Enemy) {
 	} else if card.Id == 4 {
 		c.DrawCard(4)
 	}
-
-	// if card.Id == 1 {
-	// 	enemy.Hp -= 5
-	// 	c.Energy -= 1
-	// } else if card.Id == 2 {
-
-	// 	c.Energy -= 1
-	// } else if card.Id == 3 {
-	// 	enemy.Hp -= 20
-	// 	c.Hp -= 2
-	// 	c.Energy -= 1
-	// } else if card.Id == 4 {
-
-	// 	c.Energy -= 2
-	// }
 }
 
-func (c *Character) CardDiscard(index int) {
+func (c *Character) cardDiscard(index int) {
 	c.DiscardDeck = append(c.DiscardDeck, c.HandCards[index])
 	c.HandCards = append(c.HandCards[:index], c.HandCards[index+1:]...)
 }
 
 func affectByCard(c *Character, e *Enemy, card *CardInfo) {
 	c.Shield += card.Shield
-	fmt.Printf("%v, %v, %v\n", card.Attack, e.Shield, e.Hp)
 	c.Hp -= card.SelfAttack
 	c.Energy -= card.Cost
 
@@ -155,5 +108,4 @@ func affectByCard(c *Character, e *Enemy, card *CardInfo) {
 		e.Hp -= (card.Attack - e.Shield)
 		e.Shield = 0
 	}
-	fmt.Printf("%v, %v, %v\n", card.Attack, e.Shield, e.Hp)
 }
