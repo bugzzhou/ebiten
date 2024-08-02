@@ -1,16 +1,15 @@
 package main
 
 import (
-	"ebiten/game"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 func main() {
-	ebiten.SetWindowSize(game.ScreenWidth, game.ScreenHeight)
-	ebiten.SetWindowTitle("Card Game Example")
-	game, err := game.NewGame()
+	ebiten.SetWindowSize(screenWidth, screenHeight)
+	ebiten.SetWindowTitle("Game of Life")
+	game, err := NewGame()
 	if err != nil {
 		log.Fatal(err)
 	}

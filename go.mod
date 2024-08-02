@@ -1,4 +1,4 @@
-module ebiten
+module lg
 
 go 1.22.4
 

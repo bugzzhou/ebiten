@@ -4,11 +4,10 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
-func drawUI(screen *ebiten.Image) {
+func drawGrid(screen *ebiten.Image) {
 	for i := range grid {
 		for j := range grid[i] {
 			if grid[i][j] {
@@ -20,7 +19,8 @@ func drawUI(screen *ebiten.Image) {
 	}
 }
 
-func (b *Button1) Draw(screen *ebiten.Image) {
-	vector.DrawFilledRect(screen, float32(b.x), float32(b.y), float32(b.width), float32(b.height), color.RGBA{0, 255, 255, 255}, false)
-	ebitenutil.DebugPrintAt(screen, b.label, b.x+20, b.y+10)
+func drawButtons(screen *ebiten.Image) {
+	stepButton.Draw(screen)
+	runButton.Draw(screen)
+	stopButton.Draw(screen)
 }
