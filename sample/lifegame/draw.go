@@ -20,7 +20,7 @@ func drawUI(screen *ebiten.Image) {
 	}
 }
 
-func (b *Button1) Draw(screen *ebiten.Image) {
+func (b *Button) Draw(screen *ebiten.Image) {
 	vector.DrawFilledRect(screen, float32(b.x), float32(b.y), float32(b.width), float32(b.height), color.RGBA{0, 255, 255, 255}, false)
 	ebitenutil.DebugPrintAt(screen, b.label, b.x+20, b.y+10)
 }

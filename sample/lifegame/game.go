@@ -15,21 +15,21 @@ const (
 var (
 	grid       = make([][]bool, gridSize)
 	cellSize   = screenWidth / gridSize
-	stepButton = &Button1{
+	stepButton = &Button{
 		x:      screenWidth - 300,
 		y:      screenHeight - 40,
 		width:  80,
 		height: 30,
 		label:  "Step",
 	}
-	runButton = &Button1{
+	runButton = &Button{
 		x:      screenWidth - 200,
 		y:      screenHeight - 40,
 		width:  80,
 		height: 30,
 		label:  "Run",
 	}
-	stopButton = &Button1{
+	stopButton = &Button{
 		x:      screenWidth - 100,
 		y:      screenHeight - 40,
 		width:  80,
