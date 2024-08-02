@@ -1,6 +1,6 @@
 package utils
 
-var Digits = [10][][]int{
+var Digits = [12][][]int{
 	{ // 0
 		{0, 0, 0, 0, 0},
 		{0, 1, 1, 1, 0},
@@ -91,8 +91,20 @@ var Digits = [10][][]int{
 		{0, 1, 1, 1, 0},
 		{0, 0, 0, 0, 0},
 	},
+	{ // :
+		{0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0},
+		{0, 0, 1, 0, 0},
+		{0, 0, 0, 0, 0},
+		{0, 0, 1, 0, 0},
+		{0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0},
+	},
 }
 
+// ConcatArrays takes eight 2D arrays (A1, A2, B1, A3, A4, B2, A5, A6) and concatenates them into one large 2D array
+//
+//	12 : 34 : 56 //用于展示一个时间
 func ConcatArrays(A1, A2, B1, A3, A4, B2, A5, A6 [][]int) [][]int {
 	rows := len(A1)
 	if rows == 0 {
