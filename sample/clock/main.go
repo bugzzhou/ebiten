@@ -3,13 +3,17 @@ package main
 import (
 	"log"
 
+	"clock/utils.go"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 func main() {
-	ebiten.SetWindowSize(screenWidth, screenHeight)
-	ebiten.SetWindowTitle("Game of Life")
-	game, err := NewGame()
+	ebiten.SetTPS(2)
+
+	ebiten.SetWindowSize(utils.ScreenWidth, utils.ScreenHeight)
+	ebiten.SetWindowTitle("Clock")
+	game, err := utils.NewGame()
 	if err != nil {
 		log.Fatal(err)
 	}
