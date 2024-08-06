@@ -46,7 +46,7 @@ type Point struct {
 	X, Y int
 }
 
-type Button1 struct {
+type Button struct {
 	x, y          int
 	width, height int
 	label         string
