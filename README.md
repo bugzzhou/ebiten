@@ -1,2 +1,2 @@
 # ebiten
-ebiten做的一些小
+ebiten做的一些小玩具
