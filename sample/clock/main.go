@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"clock/utils.go"
+	"clock/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
