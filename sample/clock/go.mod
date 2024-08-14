@@ -1,11 +1,8 @@
-module ebiten
+module clock
 
-go 1.22.4
+go 1.22.3
 
-require (
-	github.com/hajimehoshi/ebiten/v2 v2.7.7
-	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56
-)
+require github.com/hajimehoshi/ebiten/v2 v2.7.8
 
 require (
 	github.com/ebitengine/gomobile v0.0.0-20240518074828-e86332849895 // indirect
