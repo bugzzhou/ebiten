@@ -8,14 +8,9 @@ import (
 )
 
 func main() {
-	ebiten.SetTPS(2)
-
+	game := utils.NewGame()
 	ebiten.SetWindowSize(utils.ScreenWidth, utils.ScreenHeight)
-	ebiten.SetWindowTitle("Clock")
-	game, err := utils.NewGame()
-	if err != nil {
-		log.Fatal(err)
-	}
+	ebiten.SetWindowTitle("Ocean Simulation")
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
